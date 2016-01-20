@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">DemoSearch</string>
+    <string name="hint_search">Searching for…</string>
+    <string name="search_description">City, Cities</string>
+</resources>
