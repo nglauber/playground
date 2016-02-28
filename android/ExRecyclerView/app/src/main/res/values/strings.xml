@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">ExRecyclerView</string>
+
+    <string name="titulo">Título</string>
+    <string name="descricao">Descrição</string>
+
+    <string name="nova_mensagem">Nova mensagem</string>
+    <string name="editar_mensagem">Editar mensagem</string>
+    <string name="salvar">Salvar</string>
+    <string name="cancelar">Cancelar</string>
+</resources>
