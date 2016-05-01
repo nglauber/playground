@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Projeto Livros</string>
+    <string name="format_authors">Autores: %1$s</string>
+    <string name="format_pages">Páginas: %1$d</string>
+    <string name="format_publish_date">Data de publicação: %1$s</string>
+
+    <string name="msg_error_search_books">Erro ao buscar livros.</string>
+</resources>

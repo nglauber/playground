@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <import type="java.util.Arrays"/>
+        <variable
+            name="book"
+            type="nglauber.android.databinding.model.Book" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:padding="8dp">
+
+        <ImageView
+            android:id="@+id/image_capa"
+            android:layout_width="48dp"
+            android:layout_height="72dp"
+            android:layout_alignParentEnd="false"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:src="@{book.imageLinks.smallThumbnail}"/>
+
+        <TextView
+            android:id="@+id/text_titulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_toEndOf="@id/image_capa"
+            android:layout_toRightOf="@id/image_capa"
+            android:text="@{book.title}"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:id="@+id/text_autor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/text_titulo"
+            android:layout_alignStart="@+id/text_titulo"
+            android:layout_below="@+id/text_titulo"
+            android:text="@{Arrays.toString(book.authors)}"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+    </RelativeLayout>
+</layout>
