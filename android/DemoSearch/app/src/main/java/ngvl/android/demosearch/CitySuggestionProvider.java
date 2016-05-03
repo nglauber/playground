@@ -3,6 +3,7 @@ package ngvl.android.demosearch;
 import android.app.SearchManager;
 import android.content.ContentProvider;
 import android.content.ContentValues;
+import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.net.Uri;
@@ -20,10 +21,19 @@ import okhttp3.Response;
 
 public class CitySuggestionProvider extends ContentProvider {
 
-    List<String> cities;
+    private static final String AUTHORITY = "ngvl.android.demosearch.citysuggestion";
+
+    private static final int TYPE_ALL_SUGGESTIONS = 1;
+    private static final int TYPE_SINGLE_SUGGESTION = 2;
+
+    private UriMatcher mUriMatcher;
+    private List<String> cities;
 
     @Override
     public boolean onCreate() {
+        mUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+        mUriMatcher.addURI(AUTHORITY, "/#", TYPE_SINGLE_SUGGESTION);
+        mUriMatcher.addURI(AUTHORITY, "suggestions/search_suggest_query/*", TYPE_ALL_SUGGESTIONS);
         return false;
     }
 
@@ -64,17 +74,24 @@ public class CitySuggestionProvider extends ContentProvider {
                         SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID
                 }
         );
-        if (cities != null) {
-            String query = uri.getLastPathSegment().toUpperCase();
-            int limit = Integer.parseInt(uri.getQueryParameter(SearchManager.SUGGEST_PARAMETER_LIMIT));
 
-            int lenght = cities.size();
-            for (int i = 0; i < lenght && cursor.getCount() < limit; i++) {
-                String city = cities.get(i);
-                if (city.toUpperCase().contains(query)){
-                    cursor.addRow(new Object[]{ i, city, i });
+        if (mUriMatcher.match(uri) == TYPE_ALL_SUGGESTIONS) {
+            if (cities != null) {
+                String query = uri.getLastPathSegment().toUpperCase();
+                int limit = Integer.parseInt(uri.getQueryParameter(SearchManager.SUGGEST_PARAMETER_LIMIT));
+
+                int lenght = cities.size();
+                for (int i = 0; i < lenght && cursor.getCount() < limit; i++) {
+                    String city = cities.get(i);
+                    if (city.toUpperCase().contains(query)) {
+                        cursor.addRow(new Object[]{i, city, i});
+                    }
                 }
             }
+        } else if (mUriMatcher.match(uri) == TYPE_SINGLE_SUGGESTION) {
+            int position = Integer.parseInt(uri.getLastPathSegment());
+            String city = cities.get(position);
+            cursor.addRow(new Object[]{position, city, position});
         }
         return cursor;
     }
