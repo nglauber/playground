@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+
+        <import type="java.util.List" />
+
+        <import type="android.view.View" />
+
+        <import type="br.com.nglauber.livrosfirebase.model.MediaType" />
+
+        <variable
+            name="book"
+            type="br.com.nglauber.livrosfirebase.model.Book" />
+
+        <variable
+            name="presenter"
+            type="br.com.nglauber.livrosfirebase.DetailEditActivity" />
+
+        <variable
+            name="publishers"
+            type="java.util.List&lt;br.com.nglauber.livrosfirebase.model.Publisher&gt;" />
+    </data>
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin">
+
+            <EditText
+                android:id="@+id/edit_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/text_book_title"
+                android:text="@={book.title}" />
+
+            <EditText
+                android:id="@+id/edit_author"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/text_book_author"
+                android:text="@={book.author}" />
+
+            <EditText
+                android:id="@+id/edit_pages"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/text_book_pages"
+                android:inputType="number"
+                android:text="@={book.pages}" />
+
+            <EditText
+                android:id="@+id/edit_year"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/text_book_year"
+                android:inputType="number"
+                android:text="@={book.year}" />
+
+            <Spinner
+                android:id="@+id/spinner_publisher"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@{publishers}"
+                android:onItemSelected="@{(p, v, pos, id)->book.setPublisher(publishers[pos])}"
+                android:selection="@{publishers.indexOf(book.publisher)}" />
+
+            <CheckBox
+                android:id="@+id/check_available"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="@={book.available}"
+                android:text="@string/text_book_available" />
+
+            <RadioGroup
+                android:id="@+id/radio_group_media_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:orientation="horizontal"
+                android:visibility="@{book.available ? View.VISIBLE : View.INVISIBLE}">
+
+                <RadioButton
+                    android:id="@+id/radio_media_paper"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="@{book.mediaTypeValue == MediaType.PAPER}"
+                    android:onCheckedChanged="@{presenter::onMediaTypeChanged}"
+                    android:text="@string/text_book_media_paper" />
+
+                <RadioButton
+                    android:id="@+id/radio_media_ebook"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="@{book.mediaTypeValue == MediaType.EBOOK}"
+                    android:onCheckedChanged="@{presenter::onMediaTypeChanged}"
+                    android:text="@string/text_book_media_ebook" />
+            </RadioGroup>
+
+            <RatingBar
+                android:id="@+id/rating_book"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:rating="@={book.rating}"
+                android:visibility="@{radioGroupMediaType.visibility}" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{presenter::clickSaveBook}"
+                android:text="@string/button_salvar" />
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+</layout>

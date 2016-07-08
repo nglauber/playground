@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">Books</string>
+    <string name="activity_detail_view_title">Book details</string>
+    <string name="activity_detail_edit_title">Book edit</string>
+
+    <string name="google_sign_in_key">SUA_CHAVE_GOOGLE_AQUI</string>
+
+
+    <string name="erro_google_sign_in">Error on login with Google account.</string>
+    <string name="button_google_sign_in">Login with Google account</string>
+
+    <string name="menu_signout">Sign out</string>
+    <string name="menu_edit">Edit</string>
+
+    <string name="button_salvar">Save</string>
+
+    <string name="text_book_title">Title</string>
+    <string name="text_book_author">Author</string>
+    <string name="text_book_pages">Number of pages</string>
+    <string name="text_book_year">Year of publication</string>
+    <string name="text_book_available">Available</string>
+    <string name="text_book_unavailable">Unavailable</string>
+    <string name="text_book_media_paper">Printed</string>
+    <string name="text_book_media_ebook">E-Book</string>
+
+    <string name="text_format_book_pages">Number of pages: %1$d</string>
+    <string name="text_format_book_year">Year of publication: %1$d</string>
+
+    <string name="text_message_saving_book">Saving book…</string>
+    <string name="text_message_saving_book_error">Error on save book. Try again later…</string>
+</resources>

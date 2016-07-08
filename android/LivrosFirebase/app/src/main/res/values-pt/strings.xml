@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">Livros</string>
+    <string name="activity_detail_view_title">Detalhes do livro</string>
+    <string name="activity_detail_edit_title">Cadastro do livro</string>
+
+    <string name="erro_google_sign_in">Erro ao efetuar login com a conta do Google.</string>
+    <string name="button_google_sign_in">Login com Google</string>
+
+    <string name="menu_signout">Sign out</string>
+    <string name="menu_edit">Editar</string>
+
+    <string name="button_salvar">Salvar</string>
+
+    <string name="text_book_title">Título</string>
+    <string name="text_book_author">Autor</string>
+    <string name="text_book_pages">Número de páginas</string>
+    <string name="text_book_year">Ano de publicação</string>
+    <string name="text_book_available">Disponível</string>
+    <string name="text_book_unavailable">Indisponível</string>
+    <string name="text_book_media_paper">Impresso</string>
+    <string name="text_book_media_ebook">E-Book</string>
+
+    <string name="text_format_book_pages">Número de páginas: %1$d</string>
+    <string name="text_format_book_year">Ano de publicação: %1$d</string>
+
+    <string name="text_message_saving_book">Salvando livro…</string>
+    <string name="text_message_saving_book_error">Erro ao salvar livro. Tente novamente mais tarde…</string>
+</resources>
