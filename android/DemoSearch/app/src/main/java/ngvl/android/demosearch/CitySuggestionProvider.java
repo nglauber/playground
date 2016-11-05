@@ -33,7 +33,7 @@ public class CitySuggestionProvider extends ContentProvider {
     public boolean onCreate() {
         mUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         mUriMatcher.addURI(AUTHORITY, "/#", TYPE_SINGLE_SUGGESTION);
-        mUriMatcher.addURI(AUTHORITY, "suggestions/search_suggest_query/*", TYPE_ALL_SUGGESTIONS);
+        mUriMatcher.addURI(AUTHORITY, "search_suggest_query/*", TYPE_ALL_SUGGESTIONS);
         return false;
     }
 
