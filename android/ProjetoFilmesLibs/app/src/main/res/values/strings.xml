@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">ProjetoFilmes</string>
+    <string name="hint_search">Buscar</string>
+</resources>

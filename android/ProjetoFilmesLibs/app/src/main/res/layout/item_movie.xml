@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="movie"
+            type="br.edu.unibratec.model.Movie"/>
+    </data>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <ImageView
+            android:id="@+id/item_movie_poster"
+            android:layout_width="72dp"
+            android:layout_height="96dp"
+            android:src="@{movie.poster}" />
+
+        <TextView
+            android:id="@+id/item_movie_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/item_movie_poster"
+            android:layout_toRightOf="@+id/item_movie_poster"
+            android:text="@{movie.title}"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <TextView
+            android:id="@+id/item_movie_year"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/item_movie_title"
+            android:layout_toEndOf="@+id/item_movie_poster"
+            android:layout_toRightOf="@+id/item_movie_poster"
+            android:text="@{movie.year}" />
+    </RelativeLayout>
+</layout>
