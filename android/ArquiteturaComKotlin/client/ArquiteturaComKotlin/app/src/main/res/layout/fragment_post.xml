@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="br.com.nglauber.exemplolivro.view.activity.PostActivity">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="post"
+            type="br.com.nglauber.exemplolivro.view.binding.PostBinding" />
+
+        <variable
+            name="presenter"
+            type="br.com.nglauber.exemplolivro.presenter.PostContract.PostPresenter" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin">
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/post_edit_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/post_hint_text"
+                        android:maxLength="500"
+                        android:text="@={post.text}" />
+                </android.support.design.widget.TextInputLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/post_button_add_photo"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_centerVertical="true"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:onClick="@{()->presenter.selectImage()}"
+                        app:srcCompat="@drawable/ic_add_photo" />
+
+                    <ImageButton
+                        android:id="@+id/post_button_add_location"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_centerVertical="true"
+                        android:layout_toEndOf="@+id/post_button_add_photo"
+                        android:layout_toRightOf="@+id/post_button_add_photo"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:onClick="@{()->presenter.selectLocation()}"
+                        app:srcCompat="@drawable/ic_add_location" />
+
+                    <Button
+                        android:id="@+id/post_button_delete"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@+id/post_button_save"
+                        android:layout_toStartOf="@+id/post_button_save"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:drawableLeft="@drawable/ic_delete"
+                        android:drawableStart="@drawable/ic_delete"
+                        android:onClick="@{()->presenter.deletePost(post)}"
+                        android:text="@string/menu_post_delete"
+                        android:visibility="@{post.id == 0L ? View.GONE : View.VISIBLE}" />
+
+                    <Button
+                        android:id="@+id/post_button_save"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:drawableLeft="@drawable/ic_done"
+                        android:drawableStart="@drawable/ic_done"
+                        android:onClick="@{()->presenter.savePost(post)}"
+                        android:text="@string/menu_post_save" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:orientation="horizontal">
+
+                    <FrameLayout
+                        android:id="@+id/post_image_photo_container"
+                        android:layout_width="0dp"
+                        android:layout_height="300dp"
+                        android:layout_weight="1"
+                        android:visibility="@{post.photoUrl != null ? View.VISIBLE : View.GONE}">
+
+                        <ImageView
+                            android:id="@+id/post_image_photo"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="#ccc"
+                            android:scaleType="centerCrop"
+                            android:src="@{post.photoUrl}" />
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_gravity="right"
+                            android:onClick="@{()->presenter.updateImage((String)null)}"
+                            app:srcCompat="@drawable/ic_remove_image" />
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:id="@+id/post_image_location_container"
+                        android:layout_width="0dp"
+                        android:layout_height="300dp"
+                        android:layout_weight="1"
+                        android:visibility="@{post.locationUrl != null ? View.VISIBLE : View.GONE}">
+
+                        <ImageView
+                            android:id="@+id/post_image_location"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="#ccc"
+                            android:scaleType="centerCrop"
+                            android:src="@{post.locationUrl}" />
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_gravity="end"
+                            android:onClick="@{()->presenter.updateLocation(0,0)}"
+                            app:srcCompat="@drawable/ic_remove_image" />
+                    </FrameLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+        <include
+            android:id="@+id/post_saving"
+            layout="@layout/post_loading"
+            android:visibility="gone" />
+    </FrameLayout>
+</layout>

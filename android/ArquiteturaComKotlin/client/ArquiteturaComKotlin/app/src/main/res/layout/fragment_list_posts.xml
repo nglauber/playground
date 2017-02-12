@@ -1,0 +1,49 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="br.com.nglauber.exemplolivro.view.fragment.ListPostsFragment">
+
+    <data>
+
+        <variable
+            name="presenter"
+            type="br.com.nglauber.exemplolivro.presenter.ListPostsContract.ListPostsPresenter" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/post_list_empty"
+            layout="@layout/empty_list" />
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/post_list_swipe"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:onRefreshListener="@{()->presenter.loadPosts()}">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/post_list_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/post_list_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="14dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:clickable="true"
+            android:onClick="@{()->presenter.addNewPost()}"
+            app:fabSize="normal"
+            app:srcCompat="@drawable/ic_add" />
+
+    </RelativeLayout>
+</layout>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:id="@+id/post_saving_root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#C000">
+
+        <ProgressBar
+            android:id="@+id/post_saving_progress"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true" />
+
+        <TextView
+            android:id="@+id/post_saving_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/post_saving_progress"
+            android:layout_centerHorizontal="true"
+            android:text="@string/text_saving_post"
+            android:textColor="@android:color/white" />
+    </RelativeLayout>
+</layout>

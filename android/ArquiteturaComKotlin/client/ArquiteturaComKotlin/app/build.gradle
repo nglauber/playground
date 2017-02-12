@@ -1,0 +1,71 @@
+apply plugin: 'com.android.application'
+apply plugin: "kotlin-android"
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
+    defaultConfig {
+        applicationId "br.com.nglauber.exemplolivro"
+        minSdkVersion 16
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+
+        vectorDrawables.useSupportLibrary true
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    dataBinding {
+        enabled true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    // Kotlin + DataBinding
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    kapt "com.android.databinding:compiler:2.2.3"
+
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    // UI
+    compile "com.android.support:appcompat-v7:$appcompat_version"
+    compile "com.android.support:design:$appcompat_version"
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+
+    // Auth
+    compile 'com.facebook.android:facebook-android-sdk:4.+'
+    compile "com.google.firebase:firebase-auth:$firebase_version"
+    compile "com.google.android.gms:play-services-auth:$firebase_version"
+
+    // Places
+    compile "com.google.android.gms:play-services-places:$firebase_version"
+
+    // Anko for SQLite
+    compile "org.jetbrains.anko:anko-sqlite:$anko_version"
+
+    // Retrofit + GSON + Interceptor
+    compile "com.squareup.retrofit2:retrofit:2.0.0"
+    compile "com.squareup.retrofit2:converter-gson:2.1.0"
+    compile 'com.squareup.okhttp3:logging-interceptor:3.3.1'
+
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    testCompile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+    testCompile 'junit:junit:4.12'
+    testCompile "org.mockito:mockito-core:2.7.5"
+}
+
+kapt {
+    generateStubs = true
+}
+
+apply plugin: 'com.google.gms.google-services'

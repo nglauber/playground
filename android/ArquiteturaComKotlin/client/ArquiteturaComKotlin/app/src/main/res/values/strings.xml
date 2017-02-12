@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">ExemploLivro</string>
+
+    <string name="login_button_facebook">Sign in with facebook</string>
+
+    <string name="facebook_app_id" translatable="false">1362874283786512</string>
+
+    <string name="menu_post_photo">Add photo</string>
+    <string name="menu_post_location">Add location</string>
+    <string name="menu_post_save">Save</string>
+    <string name="post_hint_text">What I\'m thinking…</string>
+    <string name="post_message_save_success">Post saved successfully</string>
+    <string name="post_message_save_fail">Fail to save post</string>
+    <string name="post_message_delete_success">Post deleted</string>
+    <string name="post_message_delete_fail">Fail to delete post</string>
+    <string name="menu_post_delete">Delete</string>
+    <string name="error_load_message">Error on loading data</string>
+    <string name="error_load_post_message">Error to load data</string>
+    <string name="text_empty_post_list">No posts to display.\nClick on the \"+\" button to add a new post</string>
+    <string name="text_saving_post">Saving post…</string>
+    <string name="text_loading_post">Loading post…</string>
+    <string name="menu_logout">Logout</string>
+</resources>

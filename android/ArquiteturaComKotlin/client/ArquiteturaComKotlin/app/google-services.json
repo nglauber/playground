@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "205976875671",
+    "firebase_url": "https://exemplolivro-12acc.firebaseio.com",
+    "project_id": "exemplolivro-12acc",
+    "storage_bucket": "exemplolivro-12acc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:205976875671:android:61c5729f673251b9",
+        "android_client_info": {
+          "package_name": "br.com.nglauber.exemplolivro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "205976875671-c16k0rhhqte5s9irnubr8pj89ljnaane.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.com.nglauber.exemplolivro",
+            "certificate_hash": "BA4F221B8AD5FD5A9F89D5B639362A501BF9FB73"
+          }
+        },
+        {
+          "client_id": "205976875671-jr4kh171mq02r92le7of8ieut46h1sue.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB9axQEnZnyPZZIkBNpCUBr7thr1m30OEo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "205976875671-jr4kh171mq02r92le7of8ieut46h1sue.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,59 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="br.com.nglauber.exemplolivro.view.activity.PostActivity">
+
+    <data>
+
+        <variable
+            name="post"
+            type="br.com.nglauber.exemplolivro.view.binding.PostBinding" />
+
+        <variable
+            name="presenter"
+            type="br.com.nglauber.exemplolivro.presenter.ListPostsContract.ListPostsPresenter" />
+    </data>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="4dp"
+            app:cardCornerRadius="4dp">
+
+            <ImageView
+                android:id="@+id/item_post_image"
+                android:layout_width="96dp"
+                android:layout_height="96dp"
+                android:background="#CCCCCC"
+                android:scaleType="centerCrop"
+                app:placeHolder="@{@drawable/ic_image_placeholder}"
+                android:src="@{post.itemImageUrl}" />
+
+            <TextView
+                android:id="@+id/item_post_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_toEndOf="@+id/item_post_image"
+                android:layout_toRightOf="@+id/item_post_image"
+                android:text="@{post.text}" />
+
+            <TextView
+                android:id="@+id/item_post_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/item_post_text"
+                android:text="@{post.dateAsString}" />
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+</layout>
