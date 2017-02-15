@@ -3,8 +3,6 @@ package br.com.nglauber.exemplolivro.presenter
 import br.com.nglauber.exemplolivro.model.persistence.DataSourceFactory
 import br.com.nglauber.exemplolivro.model.persistence.PostDataSource
 import br.com.nglauber.exemplolivro.view.binding.PostBinding
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.uiThread
 
 class PostPresenterImpl(
         private val view: PostContract.PostView,
@@ -12,30 +10,25 @@ class PostPresenterImpl(
 
     override fun loadPost(postId: Long) {
         view.showLoadingProgress(true)
-        doAsync {
             try {
-                val post = db.loadPost(postId)
-
-                uiThread {
+                db.loadPost(postId, { post ->
                     view.showLoadingProgress(false)
+
                     if (post != null) {
                         view.showPost(PostBinding(post))
                     } else {
                         view.showLoadError()
                         view.close()
                     }
-                }
+                })
 
             } catch (e : Exception) {
                 e.printStackTrace();
 
-                uiThread {
-                    view.showLoadingProgress(false)
-                    view.showLoadError()
-                    view.close()
-                }
+                view.showLoadingProgress(false)
+                view.showLoadError()
+                view.close()
             }
-        }
     }
 
     override fun selectImage() {
@@ -64,38 +57,27 @@ class PostPresenterImpl(
 
     override fun savePost(postBinding: PostBinding) {
         view.showSavingProgress(true)
-        doAsync {
-            try {
-                val result = db.savePost(postBinding.post)
-
-                uiThread {
-                    view.showSavingProgress(false)
-                    view.showSaveMessage(result)
-                    if (result)
-                        view.close()
-                }
-
-            } catch (e :Exception){
-                e.printStackTrace()
-
-                uiThread {
-                    view.showSaveMessage(false)
+        try {
+            db.savePost(postBinding.post, { result ->
+                view.showSavingProgress(false)
+                view.showSaveMessage(result)
+                if (result)
                     view.close()
-                }
-            }
-        }
+            })
 
+        } catch (e :Exception){
+            e.printStackTrace()
+
+            view.showSaveMessage(false)
+            view.close()
+        }
     }
 
     override fun deletePost(postBinding: PostBinding) {
-        doAsync {
-            val result = db.deletePost(postBinding.post)
-
-            uiThread {
-                view.showDeleteMessage(result)
-                if (result)
-                    view.close()
-            }
-        }
+        db.deletePost(postBinding.post, { result ->
+            view.showDeleteMessage(result)
+            if (result)
+                view.close()
+        })
     }
 }

@@ -8,57 +8,102 @@ import br.com.nglauber.exemplolivro.model.data.Post
 import br.com.nglauber.exemplolivro.model.persistence.PostDataSource
 import br.com.nglauber.exemplolivro.model.persistence.file.Media
 import org.jetbrains.anko.db.*
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 import java.io.File
 import java.util.*
 
 class PostDb(val dbHelper : DbHelper = DbHelper(App.instance)) : PostDataSource {
 
-    override fun loadPosts() = dbHelper.use {
-        select(PostTable.TABLE_NAME).parseList(object : MapRowParser<Post> {
-            override fun parseRow(columns : Map<String, Any?>) : Post {
-                return PostMapper(HashMap(columns)).toDomain();
-            }
-        })
-    }
-
-    override fun loadPost(postId : Long) = dbHelper.use {
-        select(PostTable.TABLE_NAME)
-                .whereSimple("${PostTable.ID} = ?", postId.toString())
-                .parseOpt(object : MapRowParser<Post> {
+    override fun loadPosts(callback: (List<Post>)->Unit) {
+        doAsync {
+            val posts = dbHelper.use {
+                select(PostTable.TABLE_NAME).parseList(object : MapRowParser<Post> {
                     override fun parseRow(columns : Map<String, Any?>) : Post {
-                        return PostMapper(HashMap(columns)).toDomain();
+                        return PostMapper(HashMap(columns)).toDomain()
                     }
                 })
-    }
-
-    override fun savePost(post: Post): Boolean {
-        val context = dbHelper.ctx
-
-        return if (post.id == 0L){
-            insertPost(context, post)
-
-        } else {
-            updatePost(context, post)
+            }
+            uiThread {
+                callback(posts)
+            }
         }
     }
 
-    override fun deletePost(post: Post) : Boolean = dbHelper.use {
-        try {
-            beginTransaction()
-            val result = delete(PostTable.TABLE_NAME, "${PostTable.ID} = {postId}", "postId" to post.id) > 0
+    override fun loadPost(postId: Long, callback: (Post?) -> Unit) {
+        doAsync {
+            val post = dbHelper.use {
+                select(PostTable.TABLE_NAME)
+                        .whereSimple("${PostTable.ID} = ?", postId.toString())
+                        .parseOpt(object : MapRowParser<Post> {
+                            override fun parseRow(columns: Map<String, Any?>): Post {
+                                return PostMapper(HashMap(columns)).toDomain();
+                            }
+                        })
+            }
+            uiThread {
+                callback(post)
+            }
+        }
+    }
 
-            if (result){
-                val file = File(dbHelper.ctx.getExternalFilesDir(null), "${post.id}.jpg")
-                if (file.exists()) {
-                    file.delete()
-                    setTransactionSuccessful()
+    override fun savePost(post: Post, callback: (Boolean) -> Unit) {
+        doAsync {
+            try {
+                val context = dbHelper.ctx
+
+                val result = if (post.id == 0L) {
+                    insertPost(context, post)
+
+                } else {
+                    updatePost(context, post)
                 }
-                true
 
-            } else false
+                uiThread {
+                    callback(result)
+                }
 
-        } finally {
-            endTransaction()
+            } catch (e : Throwable) {
+                e.printStackTrace()
+                uiThread {
+                    callback(false)
+                }
+            }
+        }
+    }
+
+    override fun deletePost(post: Post, callback: (Boolean) -> Unit) {
+        doAsync {
+            val result = dbHelper.use {
+                try {
+                    beginTransaction()
+                    val result = delete(PostTable.TABLE_NAME, "${PostTable.ID} = {postId}", "postId" to post.id) > 0
+                    if (result) {
+                        val file = File(dbHelper.ctx.getExternalFilesDir(null), "${post.id}.jpg")
+                        if (file.exists() && !file.delete()) {
+                            false
+
+                        } else {
+                            setTransactionSuccessful()
+                            true
+                        }
+
+                    } else false
+
+                } catch (e : Throwable) {
+                    e.printStackTrace()
+                    uiThread {
+                        callback(false)
+                    }
+
+                } finally {
+                    endTransaction()
+                }
+            }
+
+            uiThread {
+                callback(result)
+            }
         }
     }
 

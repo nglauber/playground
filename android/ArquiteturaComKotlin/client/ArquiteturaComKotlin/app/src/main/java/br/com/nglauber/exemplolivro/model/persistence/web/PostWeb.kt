@@ -14,6 +14,8 @@ import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody
 import okhttp3.logging.HttpLoggingInterceptor
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
@@ -47,40 +49,60 @@ class PostWeb(private val username : String = AccessManager.instance.currentUser
         service = retrofit.create<PostAPI>(PostAPI::class.java)
     }
 
-    override fun loadPosts(): List<Post> {
+    override fun loadPosts(callback: (List<Post>) -> Unit) {
+        doAsync {
+            val posts = service.list(username).execute()
+            val postsList = posts.body().map { it.toDomain() }
 
-        val posts = service.list(username).execute()
-        return posts.body().map { it.toDomain() }
-    }
-
-
-    override fun loadPost(postId: Long): Post? {
-        val post = service.loadPost(postId, username).execute()
-        return post.body()?.toDomain()
-    }
-
-    override fun savePost(post: Post): Boolean {
-        var result : Boolean
-
-        if (post.id == 0L) {
-            post.id = service.insert(PostMapper(post, username)).execute().body().id
-            result = post.id != 0L
-
-        } else {
-            val id = service.update(post.id, PostMapper(post, username)).execute().body().id
-            result = id != 0L
+            uiThread {
+                callback(postsList)
+            }
         }
-
-        if (result && !TextUtils.isEmpty(post.photoUrl)){
-            result = uploadFile(post)
-        }
-
-        return result
     }
 
-    override fun deletePost(post: Post): Boolean {
-        val result = service.delete(post.id).execute()
-        return result.body().id != 0L
+
+    override fun loadPost(postId: Long, callback: (Post?) -> Unit) {
+        doAsync {
+            val post = service.loadPost(postId, username).execute()
+            val postDomain = post.body()?.toDomain()
+            uiThread {
+                callback(postDomain)
+            }
+        }
+    }
+
+    override fun savePost(post: Post, callback: (Boolean) -> Unit) {
+        doAsync {
+            var result : Boolean
+
+            if (post.id == 0L) {
+                post.id = service.insert(PostMapper(post, username)).execute().body().id
+                result = post.id != 0L
+
+            } else {
+                val id = service.update(post.id, PostMapper(post, username)).execute().body().id
+                result = id != 0L
+            }
+
+            if (result && !TextUtils.isEmpty(post.photoUrl)){
+                result = uploadFile(post)
+            }
+
+            uiThread {
+                callback(result)
+            }
+        }
+    }
+
+    override fun deletePost(post: Post, callback: (Boolean) -> Unit) {
+        doAsync {
+            val result = service.delete(post.id).execute()
+            val resultBool = result.body().id != 0L
+
+            uiThread {
+                callback(resultBool)
+            }
+        }
     }
 
     private fun uploadFile(post : Post) : Boolean {

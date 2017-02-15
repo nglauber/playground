@@ -9,7 +9,7 @@ class DbHelper(var ctx : Context = App.instance) : ManagedSQLiteOpenHelper(ctx, 
 
     override fun onCreate(db: SQLiteDatabase) {
         db.createTable(PostTable.TABLE_NAME, true,
-                PostTable.ID to INTEGER + PRIMARY_KEY,
+                PostTable.ID to INTEGER + PRIMARY_KEY + AUTOINCREMENT,
                 PostTable.TEXT to TEXT,
                 PostTable.DATE to INTEGER,
                 PostTable.PHOTO_URL to TEXT,

@@ -13,15 +13,19 @@ class Media {
     companion object {
         fun saveImageFromUri(context : Context, origin : Uri, destination : File) : Boolean {
             try {
-                var input: InputStream = context.getContentResolver().openInputStream(origin)
+                if (!destination.exists()){
+                    destination.createNewFile()
+                }
+                val input: InputStream = context.contentResolver.openInputStream(origin)
                 val bmp = BitmapFactory.decodeStream(input)
 
                 val bytes = FileOutputStream(destination)
                 bmp.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
-
                 return true
+
             } catch (e : Exception){
-                return false;
+                e.printStackTrace()
+                return false
             }
         }
     }

@@ -4,11 +4,11 @@ import br.com.nglauber.exemplolivro.model.data.Post
 
 interface PostDataSource {
 
-    fun loadPosts() : List<Post>
+    fun loadPosts(callback: (List<Post>)->Unit)
 
-    fun loadPost(postId : Long) : Post?
+    fun loadPost(postId : Long, callback: (Post?)->Unit)
 
-    fun savePost(post: Post) : Boolean
+    fun savePost(post: Post, callback : (Boolean)->Unit)
 
-    fun deletePost(post: Post) : Boolean
+    fun deletePost(post: Post, callback: (Boolean) -> Unit)
 }
