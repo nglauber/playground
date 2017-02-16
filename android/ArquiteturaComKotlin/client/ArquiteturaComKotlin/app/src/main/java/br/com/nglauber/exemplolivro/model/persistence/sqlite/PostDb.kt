@@ -8,101 +8,90 @@ import br.com.nglauber.exemplolivro.model.data.Post
 import br.com.nglauber.exemplolivro.model.persistence.PostDataSource
 import br.com.nglauber.exemplolivro.model.persistence.file.Media
 import org.jetbrains.anko.db.*
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.uiThread
+import rx.Observable
 import java.io.File
 import java.util.*
 
 class PostDb(val dbHelper : DbHelper = DbHelper(App.instance)) : PostDataSource {
 
-    override fun loadPosts(callback: (List<Post>)->Unit) {
-        doAsync {
-            val posts = dbHelper.use {
-                select(PostTable.TABLE_NAME).parseList(object : MapRowParser<Post> {
-                    override fun parseRow(columns : Map<String, Any?>) : Post {
-                        return PostMapper(HashMap(columns)).toDomain()
-                    }
-                })
-            }
-            uiThread {
-                callback(posts)
-            }
+    override fun loadPosts() : Observable<List<Post>> {
+        val posts = dbHelper.use {
+            select(PostTable.TABLE_NAME).parseList(object : MapRowParser<Post> {
+                override fun parseRow(columns : Map<String, Any?>) : Post {
+                    return PostMapper(HashMap(columns)).toDomain()
+                }
+            })
         }
+        return Observable.just(posts)
     }
 
-    override fun loadPost(postId: Long, callback: (Post?) -> Unit) {
-        doAsync {
-            val post = dbHelper.use {
-                select(PostTable.TABLE_NAME)
-                        .whereSimple("${PostTable.ID} = ?", postId.toString())
-                        .parseOpt(object : MapRowParser<Post> {
-                            override fun parseRow(columns: Map<String, Any?>): Post {
-                                return PostMapper(HashMap(columns)).toDomain();
-                            }
-                        })
-            }
-            uiThread {
-                callback(post)
-            }
+    override fun loadPost(postId: Long) : Observable<Post> {
+        val post = dbHelper.use {
+            select(PostTable.TABLE_NAME)
+                    .whereSimple("${PostTable.ID} = ?", postId.toString())
+                    .parseOpt(object : MapRowParser<Post> {
+                        override fun parseRow(columns: Map<String, Any?>): Post {
+                            return PostMapper(HashMap(columns)).toDomain();
+                        }
+                    })
         }
+        return Observable.just(post)
     }
 
-    override fun savePost(post: Post, callback: (Boolean) -> Unit) {
-        doAsync {
+    override fun savePost(post: Post) : Observable<Long> {
+        return Observable.create {
+            subscriber ->
+
             try {
                 val context = dbHelper.ctx
 
-                val result = if (post.id == 0L) {
+                if (post.id == 0L) {
                     insertPost(context, post)
 
                 } else {
                     updatePost(context, post)
                 }
 
-                uiThread {
-                    callback(result)
-                }
+                subscriber.onNext(post.id)
 
             } catch (e : Throwable) {
                 e.printStackTrace()
-                uiThread {
-                    callback(false)
-                }
+
+                subscriber.onError(e)
             }
         }
     }
 
-    override fun deletePost(post: Post, callback: (Boolean) -> Unit) {
-        doAsync {
-            val result = dbHelper.use {
+    override fun deletePost(post: Post) : Observable<Boolean> {
+        return Observable.create {
+            subscriber ->
+
+            dbHelper.use {
                 try {
                     beginTransaction()
                     val result = delete(PostTable.TABLE_NAME, "${PostTable.ID} = {postId}", "postId" to post.id) > 0
+
                     if (result) {
+
                         val file = File(dbHelper.ctx.getExternalFilesDir(null), "${post.id}.jpg")
                         if (file.exists() && !file.delete()) {
-                            false
+                            subscriber.onError(RuntimeException("Fail to delete file ${file.absolutePath}"))
 
                         } else {
                             setTransactionSuccessful()
-                            true
+                            subscriber.onNext(true)
                         }
 
-                    } else false
+                    } else {
+                        subscriber.onError(RuntimeException("Fail to delete post"))
+                    }
 
                 } catch (e : Throwable) {
-                    e.printStackTrace()
-                    uiThread {
-                        callback(false)
-                    }
+                    subscriber.onError(e)
 
                 } finally {
                     endTransaction()
                 }
-            }
-
-            uiThread {
-                callback(result)
             }
         }
     }

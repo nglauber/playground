@@ -14,10 +14,10 @@ import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody
 import okhttp3.logging.HttpLoggingInterceptor
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.uiThread
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import rx.Observable
 import java.io.File
 
 class PostWeb(private val username : String = AccessManager.instance.currentUser?.email!!,
@@ -42,6 +42,7 @@ class PostWeb(private val username : String = AccessManager.instance.currentUser
 
         val retrofit = Retrofit.Builder()
                 .baseUrl(SERVER_PATH)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .client(httpClient.build())
                 .build()
@@ -49,60 +50,51 @@ class PostWeb(private val username : String = AccessManager.instance.currentUser
         service = retrofit.create<PostAPI>(PostAPI::class.java)
     }
 
-    override fun loadPosts(callback: (List<Post>) -> Unit) {
-        doAsync {
-            val posts = service.list(username).execute()
-            val postsList = posts.body().map { it.toDomain() }
-
-            uiThread {
-                callback(postsList)
-            }
+    override fun loadPosts() : Observable<List<Post>> {
+        val result = service.list(username).map {
+            post -> post.map { it.toDomain() }
         }
+        return result
     }
 
 
-    override fun loadPost(postId: Long, callback: (Post?) -> Unit) {
-        doAsync {
-            val post = service.loadPost(postId, username).execute()
-            val postDomain = post.body()?.toDomain()
-            uiThread {
-                callback(postDomain)
-            }
-        }
+    override fun loadPost(postId: Long) : Observable<Post> {
+        val postMapper = service.loadPost(postId, username)
+        return postMapper.map{ post-> post?.toDomain() }
     }
 
-    override fun savePost(post: Post, callback: (Boolean) -> Unit) {
-        doAsync {
-            var result : Boolean
+    override fun savePost(post: Post): Observable<Long> {
+        val apiResult = if (post.id == 0L) {
+            service.insert(PostMapper(post, username))
 
-            if (post.id == 0L) {
-                post.id = service.insert(PostMapper(post, username)).execute().body().id
-                result = post.id != 0L
+        } else {
+            service.update(post.id, PostMapper(post, username))
 
+        }.flatMap { idPost ->
+            if (idPost.id != 0L){
+                post.id = idPost.id
+                if (!TextUtils.isEmpty(post.photoUrl) && post.photoUrl?.startsWith("http") == false) {
+                    if (uploadFile(post)){
+                        Observable.just(idPost.id)
+                    } else {
+                        Observable.error(RuntimeException("Fail to upload post image"))
+                    }
+                } else {
+                    Observable.just(idPost.id)
+                }
             } else {
-                val id = service.update(post.id, PostMapper(post, username)).execute().body().id
-                result = id != 0L
-            }
-
-            if (result && !TextUtils.isEmpty(post.photoUrl)){
-                result = uploadFile(post)
-            }
-
-            uiThread {
-                callback(result)
+                Observable.error(RuntimeException("Fail to save post"))
             }
         }
+        return apiResult
     }
 
-    override fun deletePost(post: Post, callback: (Boolean) -> Unit) {
-        doAsync {
-            val result = service.delete(post.id).execute()
-            val resultBool = result.body().id != 0L
-
-            uiThread {
-                callback(resultBool)
-            }
-        }
+    override fun deletePost(post: Post): Observable<Boolean> {
+        return service.delete(post.id)
+                .flatMap { idResult ->
+                    if (idResult.id != 0L) Observable.just(true)
+                    else Observable.error(RuntimeException("Fail to delete post"))
+                }
     }
 
     private fun uploadFile(post : Post) : Boolean {
@@ -118,7 +110,7 @@ class PostWeb(private val username : String = AccessManager.instance.currentUser
 
             val body = MultipartBody.Part.createFormData("arquivo", file.getName(), requestFile)
             val description = RequestBody.create(MultipartBody.FORM, post.id.toString())
-            val response = service.uploaPhoto(description, body).execute()
+            val response = service.uploadPhoto(description, body).execute()
             return response.isSuccessful
         }
         return false

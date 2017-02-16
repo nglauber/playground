@@ -95,9 +95,13 @@ if ($metodoHttp == 'POST') {
     $stmt->close();
     $jsonRetorno = array("id"=>(int)$id);
 
-    $image_path =  "upload/" . $id .".jpg";
-    if (($photourl == NULL || $photourl == "") && file_exists($image_path)){
-        unlink($image_path);
+    $image_path =  "upload/" . $id ."___*";
+    if ($photourl == NULL || $photourl == ""){
+        $files = glob($image_path); //get all file names
+        foreach($files as $file){
+            if(is_file($file))
+            unlink($file); //delete file
+        }
     }
 
     echo json_encode($jsonRetorno);
@@ -111,9 +115,12 @@ if ($metodoHttp == 'POST') {
     $stmt->close();
     $jsonRetorno = array("id"=>(int)$id);
 
-    $image_path =  "upload/" . $id .".jpg";
-    if (file_exists($image_path)){
-        unlink($image_path);
+    $image_path =  "upload/" . $id ."___*";
+    
+    $files = glob($image_path); //get all file names
+    foreach($files as $file){
+        if(is_file($file))
+        unlink($file); //delete file
     }
 
     echo json_encode($jsonRetorno);

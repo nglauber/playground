@@ -1,14 +1,15 @@
 package br.com.nglauber.exemplolivro.model.persistence
 
 import br.com.nglauber.exemplolivro.model.data.Post
+import rx.Observable
 
 interface PostDataSource {
 
-    fun loadPosts(callback: (List<Post>)->Unit)
+    fun loadPosts() : Observable<List<Post>>
 
-    fun loadPost(postId : Long, callback: (Post?)->Unit)
+    fun loadPost(postId : Long) : Observable<Post>
 
-    fun savePost(post: Post, callback : (Boolean)->Unit)
+    fun savePost(post: Post) : Observable<Long>
 
-    fun deletePost(post: Post, callback: (Boolean) -> Unit)
+    fun deletePost(post: Post) : Observable<Boolean>
 }

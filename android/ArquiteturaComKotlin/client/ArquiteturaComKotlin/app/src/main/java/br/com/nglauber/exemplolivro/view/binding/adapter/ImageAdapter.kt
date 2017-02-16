@@ -3,7 +3,6 @@ package br.com.nglauber.exemplolivro.view.binding.adapter
 import android.databinding.BindingAdapter
 import android.graphics.drawable.Drawable
 import android.widget.ImageView
-
 import com.bumptech.glide.Glide
 
 object ImageAdapter {
@@ -15,7 +14,9 @@ object ImageAdapter {
 
     @BindingAdapter("android:src", "placeHolder")
     @JvmStatic
-    fun setImageUrl(imageView: ImageView, url: String?, thumbnail : Drawable) {
-        Glide.with(imageView.context).load(url).placeholder(thumbnail).into(imageView)
+    fun setImageUrl(imageView: ImageView, url: String?, thumbnail: Drawable) {
+        Glide.with(imageView.context).load(url)
+                .placeholder(thumbnail)
+                .into(imageView)
     }
 }

@@ -3,6 +3,8 @@ package br.com.nglauber.exemplolivro.presenter
 import br.com.nglauber.exemplolivro.model.persistence.DataSourceFactory
 import br.com.nglauber.exemplolivro.model.persistence.PostDataSource
 import br.com.nglauber.exemplolivro.view.binding.PostBinding
+import rx.android.schedulers.AndroidSchedulers
+import rx.schedulers.Schedulers
 
 class PostPresenterImpl(
         private val view: PostContract.PostView,
@@ -10,8 +12,10 @@ class PostPresenterImpl(
 
     override fun loadPost(postId: Long) {
         view.showLoadingProgress(true)
-            try {
-                db.loadPost(postId, { post ->
+        db.loadPost(postId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ post ->
                     view.showLoadingProgress(false)
 
                     if (post != null) {
@@ -20,15 +24,13 @@ class PostPresenterImpl(
                         view.showLoadError()
                         view.close()
                     }
+                }, { error ->
+                    error.printStackTrace()
+
+                    view.showLoadingProgress(false)
+                    view.showLoadError()
+                    view.close()
                 })
-
-            } catch (e : Exception) {
-                e.printStackTrace();
-
-                view.showLoadingProgress(false)
-                view.showLoadError()
-                view.close()
-            }
     }
 
     override fun selectImage() {
@@ -57,27 +59,34 @@ class PostPresenterImpl(
 
     override fun savePost(postBinding: PostBinding) {
         view.showSavingProgress(true)
-        try {
-            db.savePost(postBinding.post, { result ->
-                view.showSavingProgress(false)
-                view.showSaveMessage(result)
-                if (result)
+        db.savePost(postBinding.post)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ result ->
+                    val success = result != 0L
+                    view.showSavingProgress(false)
+                    view.showSaveMessage(success)
+                    if (success)
+                        view.close()
+                }, { error ->
+                    error.printStackTrace()
+                    view.showSaveMessage(false)
                     view.close()
-            })
-
-        } catch (e :Exception){
-            e.printStackTrace()
-
-            view.showSaveMessage(false)
-            view.close()
-        }
+                }
+            )
     }
 
     override fun deletePost(postBinding: PostBinding) {
-        db.deletePost(postBinding.post, { result ->
-            view.showDeleteMessage(result)
-            if (result)
-                view.close()
-        })
+        db.deletePost(postBinding.post)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ result ->
+                    view.showDeleteMessage(result)
+                    if (result)
+                        view.close()
+                }, { error ->
+                    error.printStackTrace()
+                    view.showDeleteMessage(false)
+                })
     }
 }

@@ -5,7 +5,11 @@ if ($_FILES["arquivo"]["error"] > 0) {
     
 } else {
     $id = $_POST["id"];
-    $arquivo_destino = "upload/" . $id .".jpg";
+
+    $image_path =  "upload/" . $id ."___*";
+    $files = glob($image_path); //get all file names
+    
+    $arquivo_destino = "upload/" . $id ."___". uniqid(rand(), true) .".jpg";
     move_uploaded_file(
         $_FILES["arquivo"]["tmp_name"],
         $arquivo_destino);
@@ -24,6 +28,11 @@ if ($_FILES["arquivo"]["error"] > 0) {
     $stmt->execute();
     $stmt->close();
     $jsonRetorno = array("id"=>(int)$id);
+
+    foreach($files as $file){
+        if(is_file($file))
+        unlink($file); //delete file
+    }
 
     echo json_encode($jsonRetorno);
 
