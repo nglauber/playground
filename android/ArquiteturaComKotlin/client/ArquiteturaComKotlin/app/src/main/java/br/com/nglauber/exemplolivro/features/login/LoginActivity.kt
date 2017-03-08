@@ -6,32 +6,33 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.Toast
-
+import br.com.nglauber.exemplolivro.App
 import br.com.nglauber.exemplolivro.R
 import br.com.nglauber.exemplolivro.databinding.ActivityLoginBinding
+import br.com.nglauber.exemplolivro.features.postslist.ListPostsActivity
 import br.com.nglauber.exemplolivro.model.auth.facebook.FacebookAuth
 import br.com.nglauber.exemplolivro.model.auth.google.GoogleAuth
-import br.com.nglauber.exemplolivro.features.postslist.ListPostsActivity
-import br.com.nglauber.exemplolivro.features.login.LoginContract
-import br.com.nglauber.exemplolivro.features.login.LoginPresenter
+import javax.inject.Inject
 
-class LoginActivity : AppCompatActivity(), LoginContract.LoginView {
+class LoginActivity : AppCompatActivity(), LoginContract.View {
+
+    @Inject lateinit var mPresenter: LoginContract.Presenter
 
     private var mBinding: ActivityLoginBinding? = null
-    private var mPresenter: LoginContract.LoginPresenter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mBinding = DataBindingUtil.setContentView<ActivityLoginBinding>(this, R.layout.activity_login)
-        mPresenter = LoginPresenter(this)
+        App.component.inject(this)
+        mPresenter.attachView(this)
 
-        mBinding?.loginGoogleSignIn?.setOnClickListener { mPresenter?.startAuthProcess(GoogleAuth(this@LoginActivity)) }
-        mBinding?.loginFacebookSignIn?.setOnClickListener { mPresenter?.startAuthProcess(FacebookAuth(this@LoginActivity)) }
+        mBinding = DataBindingUtil.setContentView<ActivityLoginBinding>(this, R.layout.activity_login)
+        mBinding?.loginGoogleSignIn?.setOnClickListener { mPresenter.startAuthProcess(GoogleAuth(this@LoginActivity)) }
+        mBinding?.loginFacebookSignIn?.setOnClickListener { mPresenter.startAuthProcess(FacebookAuth(this@LoginActivity)) }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         super.onActivityResult(requestCode, resultCode, data)
-        mPresenter?.handleAuthResponse(requestCode, resultCode, data)
+        mPresenter.handleAuthResponse(requestCode, resultCode, data)
     }
 
     override fun showProgress(show: Boolean) {

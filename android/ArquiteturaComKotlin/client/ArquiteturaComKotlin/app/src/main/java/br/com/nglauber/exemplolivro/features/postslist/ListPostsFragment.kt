@@ -11,20 +11,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import br.com.nglauber.exemplolivro.App
 import br.com.nglauber.exemplolivro.R
 import br.com.nglauber.exemplolivro.databinding.FragmentListPostsBinding
 import br.com.nglauber.exemplolivro.features.postdetail.PostActivity
 import br.com.nglauber.exemplolivro.shared.BaseFragment
 import br.com.nglauber.exemplolivro.shared.binding.PostBinding
+import javax.inject.Inject
 
 class ListPostsFragment : BaseFragment(), ListPostsContract.View {
 
+    @Inject lateinit var mPresenter: ListPostsContract.Presenter
+
     var mBinding: FragmentListPostsBinding? = null
-    var mPresenter: ListPostsContract.Presenter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mPresenter = ListPostsPresenter(this)
+        App.component.inject(this)
+        mPresenter.attachView(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
@@ -43,16 +47,12 @@ class ListPostsFragment : BaseFragment(), ListPostsContract.View {
 
     override fun onResume() {
         super.onResume()
-        mPresenter?.subscribe()
+        mPresenter.subscribe()
     }
 
     override fun onPause() {
         super.onPause()
-        mPresenter?.unsubscribe()
-    }
-
-    override fun setPresenter(presenter: ListPostsContract.Presenter) {
-        mPresenter = presenter
+        mPresenter.unsubscribe()
     }
 
     override fun addNewPost() {
@@ -69,7 +69,7 @@ class ListPostsFragment : BaseFragment(), ListPostsContract.View {
 
     override fun updateList(posts: List<PostBinding>) {
         val adapter = ListPostsAdapter(posts) {
-            mPresenter?.editPost(it.id)
+            mPresenter.editPost(it.id)
         }
         mBinding?.postListRecyclerview?.adapter = adapter
     }

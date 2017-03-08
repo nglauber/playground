@@ -1,6 +1,6 @@
 package br.com.nglauber.exemplolivro.features.postslist
 
-import br.com.nglauber.exemplolivro.model.persistence.DataSourceFactory
+import br.com.nglauber.exemplolivro.App
 import br.com.nglauber.exemplolivro.model.persistence.PostDataSource
 import br.com.nglauber.exemplolivro.shared.binding.PostBinding
 import rx.android.schedulers.AndroidSchedulers
@@ -8,16 +8,18 @@ import rx.schedulers.Schedulers
 import rx.subscriptions.CompositeSubscription
 import timber.log.Timber
 import java.util.*
+import javax.inject.Inject
 
 
-class ListPostsPresenter(private val view: ListPostsContract.View,
-                         private val dataSource: PostDataSource = DataSourceFactory.getDefaultPostDataSource())
-        : ListPostsContract.Presenter {
+class ListPostsPresenter : ListPostsContract.Presenter {
 
+    @Inject lateinit var dataSource: PostDataSource
+
+    private lateinit var view: ListPostsContract.View
     private val mSubscriptions = CompositeSubscription()
 
     init {
-        view.setPresenter(this)
+        App.component.inject(this)
     }
 
     override fun loadPosts() {
@@ -61,5 +63,9 @@ class ListPostsPresenter(private val view: ListPostsContract.View,
 
     override fun addNewPost() {
         view.addNewPost()
+    }
+
+    override fun attachView(view: ListPostsContract.View) {
+        this.view = view
     }
 }

@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import br.com.nglauber.exemplolivro.App
 import br.com.nglauber.exemplolivro.R
 import br.com.nglauber.exemplolivro.databinding.FragmentPostBinding
 import br.com.nglauber.exemplolivro.shared.BaseFragment
@@ -16,17 +17,20 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException
 import com.google.android.gms.common.GooglePlayServicesRepairableException
 import com.google.android.gms.location.places.AutocompleteFilter
 import com.google.android.gms.location.places.ui.PlaceAutocomplete
+import javax.inject.Inject
 
 class PostFragment : BaseFragment(), PostContract.View {
 
+    @Inject lateinit var mPresenter: PostContract.Presenter
+
     var mPost : PostBinding? = null
     var mBinding: FragmentPostBinding? = null
-    var mPresenter: PostContract.Presenter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         retainInstance = true
-        mPresenter = PostPresenter(this)
+        App.component.inject(this)
+        mPresenter.attachView(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -36,7 +40,7 @@ class PostFragment : BaseFragment(), PostContract.View {
 
         if (mPost == null) {
             if (arguments.getLong(EXTRA_ID) > 0) {
-                mPresenter?.loadPost(arguments.getLong(EXTRA_ID))
+                mPresenter.loadPost(arguments.getLong(EXTRA_ID))
             } else {
                 mPost = PostBinding()
             }
@@ -51,18 +55,14 @@ class PostFragment : BaseFragment(), PostContract.View {
         if (resultCode == Activity.RESULT_OK) {
 
             if (requestCode == REQUEST_GALLERY) {
-                mPresenter?.updateImage(data?.data.toString())
+                mPresenter.updateImage(data?.data.toString())
 
             } else if (requestCode == REQUEST_PLACE) {
                 val place = PlaceAutocomplete.getPlace(activity, data)
                 val latLng = place.latLng
-                mPresenter?.updateLocation(latLng.latitude, latLng.longitude)
+                mPresenter.updateLocation(latLng.latitude, latLng.longitude)
             }
         }
-    }
-
-    override fun setPresenter(presenter: PostContract.Presenter) {
-        mPresenter = presenter
     }
 
     override fun selectImage() {
@@ -86,7 +86,6 @@ class PostFragment : BaseFragment(), PostContract.View {
         } catch (e: GooglePlayServicesNotAvailableException) {
             e.printStackTrace()
         }
-
     }
 
     override fun showPost(postBinding: PostBinding) {

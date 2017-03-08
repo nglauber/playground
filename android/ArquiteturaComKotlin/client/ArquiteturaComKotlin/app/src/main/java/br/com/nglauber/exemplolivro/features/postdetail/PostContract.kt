@@ -5,7 +5,7 @@ import br.com.nglauber.exemplolivro.shared.binding.PostBinding
 
 interface PostContract {
 
-    interface Presenter : BaseContract.BasePresenter {
+    interface Presenter : BaseContract.BasePresenter<View> {
 
         fun selectImage()
 
@@ -22,7 +22,7 @@ interface PostContract {
         fun loadPost(postId: Long)
     }
 
-    interface View : BaseContract.BaseView<Presenter> {
+    interface View : BaseContract.BaseView {
 
         fun selectImage()
 

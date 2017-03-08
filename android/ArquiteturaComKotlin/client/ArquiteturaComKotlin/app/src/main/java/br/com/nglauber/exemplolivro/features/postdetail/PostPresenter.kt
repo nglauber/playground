@@ -1,21 +1,23 @@
 package br.com.nglauber.exemplolivro.features.postdetail
 
-import br.com.nglauber.exemplolivro.model.persistence.DataSourceFactory
+import br.com.nglauber.exemplolivro.App
 import br.com.nglauber.exemplolivro.model.persistence.PostDataSource
 import br.com.nglauber.exemplolivro.shared.binding.PostBinding
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 import rx.subscriptions.CompositeSubscription
 import timber.log.Timber
+import javax.inject.Inject
 
-class PostPresenter(
-        private val view: PostContract.View,
-        private val db : PostDataSource = DataSourceFactory.getDefaultPostDataSource()) : PostContract.Presenter {
+class PostPresenter : PostContract.Presenter {
 
+    @Inject lateinit var db: PostDataSource
+
+    private lateinit var view: PostContract.View
     private val mSubscriptions = CompositeSubscription()
 
     init {
-        view.setPresenter(this)
+        App.component.inject(this)
     }
 
     override fun loadPost(postId: Long) {
@@ -106,5 +108,9 @@ class PostPresenter(
                     Timber.e(error)
                     view.showDeleteMessage(false)
                 })
+    }
+
+    override fun attachView(view: PostContract.View) {
+        this.view = view
     }
 }

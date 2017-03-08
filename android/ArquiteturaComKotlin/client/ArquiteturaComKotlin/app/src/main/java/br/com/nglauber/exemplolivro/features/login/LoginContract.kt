@@ -4,14 +4,16 @@ import br.com.nglauber.exemplolivro.model.auth.Authentication
 
 interface LoginContract {
 
-    interface LoginPresenter {
+    interface Presenter {
 
         fun startAuthProcess(auth: Authentication)
 
         fun handleAuthResponse(requestCode: Int, resultCode: Int, data: Any)
+
+        fun attachView(view : View)
     }
 
-    interface LoginView {
+    interface View {
 
         fun showProgress(show: Boolean)
 

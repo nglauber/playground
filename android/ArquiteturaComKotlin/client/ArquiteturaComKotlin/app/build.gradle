@@ -29,11 +29,17 @@ android {
 }
 
 dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+
     // Kotlin + DataBinding
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     kapt "com.android.databinding:compiler:$gradle_version"
 
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    // Dagger 2
+    compile "com.google.dagger:dagger:$dagger_version"
+    annotationProcessor "com.google.dagger:dagger-compiler:$dagger_version"
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+
     // UI
     compile "com.android.support:appcompat-v7:$appcompat_version"
     compile "com.android.support:design:$appcompat_version"
