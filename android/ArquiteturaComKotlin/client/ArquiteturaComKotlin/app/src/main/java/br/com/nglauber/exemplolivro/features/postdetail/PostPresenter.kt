@@ -1,18 +1,27 @@
-package br.com.nglauber.exemplolivro.presenter
+package br.com.nglauber.exemplolivro.features.postdetail
 
 import br.com.nglauber.exemplolivro.model.persistence.DataSourceFactory
 import br.com.nglauber.exemplolivro.model.persistence.PostDataSource
-import br.com.nglauber.exemplolivro.view.binding.PostBinding
+import br.com.nglauber.exemplolivro.shared.binding.PostBinding
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
+import rx.subscriptions.CompositeSubscription
+import timber.log.Timber
 
-class PostPresenterImpl(
-        private val view: PostContract.PostView,
-        private val db : PostDataSource = DataSourceFactory.getDefaultPostDataSource()) : PostContract.PostPresenter {
+class PostPresenter(
+        private val view: PostContract.View,
+        private val db : PostDataSource = DataSourceFactory.getDefaultPostDataSource()) : PostContract.Presenter {
+
+    private val mSubscriptions = CompositeSubscription()
+
+    init {
+        view.setPresenter(this)
+    }
 
     override fun loadPost(postId: Long) {
         view.showLoadingProgress(true)
-        db.loadPost(postId)
+        mSubscriptions.clear()
+        val subscr = db.loadPost(postId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ post ->
@@ -25,12 +34,21 @@ class PostPresenterImpl(
                         view.close()
                     }
                 }, { error ->
-                    error.printStackTrace()
+                    Timber.e(error)
 
                     view.showLoadingProgress(false)
                     view.showLoadError()
                     view.close()
                 })
+        mSubscriptions.add(subscr)
+    }
+
+    override fun subscribe() {
+
+    }
+
+    override fun unsubscribe() {
+        mSubscriptions.clear()
     }
 
     override fun selectImage() {
@@ -69,7 +87,7 @@ class PostPresenterImpl(
                     if (success)
                         view.close()
                 }, { error ->
-                    error.printStackTrace()
+                    Timber.e(error)
                     view.showSaveMessage(false)
                     view.close()
                 }
@@ -85,7 +103,7 @@ class PostPresenterImpl(
                     if (result)
                         view.close()
                 }, { error ->
-                    error.printStackTrace()
+                    Timber.e(error)
                     view.showDeleteMessage(false)
                 })
     }

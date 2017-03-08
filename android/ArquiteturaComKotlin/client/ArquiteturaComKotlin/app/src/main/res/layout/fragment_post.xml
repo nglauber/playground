@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="br.com.nglauber.exemplolivro.view.activity.PostActivity">
+    tools:context="br.com.nglauber.exemplolivro.features.postdetail.PostActivity">
 
     <data>
 
@@ -10,11 +10,11 @@
 
         <variable
             name="post"
-            type="br.com.nglauber.exemplolivro.view.binding.PostBinding" />
+            type="br.com.nglauber.exemplolivro.shared.binding.PostBinding" />
 
         <variable
             name="presenter"
-            type="br.com.nglauber.exemplolivro.presenter.PostContract.PostPresenter" />
+            type="br.com.nglauber.exemplolivro.features.postdetail.PostContract.Presenter" />
     </data>
 
     <FrameLayout

@@ -1,4 +1,4 @@
-package br.com.nglauber.exemplolivro.presenter
+package br.com.nglauber.exemplolivro.features.login
 
 import br.com.nglauber.exemplolivro.model.auth.Authentication
 
@@ -17,7 +17,7 @@ interface LoginContract {
 
         fun showLoginError()
 
-        fun goToMainScreen()
+        fun showMainScreen()
     }
 
 }

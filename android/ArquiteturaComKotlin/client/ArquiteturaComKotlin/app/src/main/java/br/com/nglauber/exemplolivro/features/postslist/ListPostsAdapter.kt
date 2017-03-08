@@ -1,4 +1,4 @@
-package br.com.nglauber.exemplolivro.view.adapter
+package br.com.nglauber.exemplolivro.features.postslist
 
 import android.databinding.DataBindingUtil
 import android.support.v7.widget.RecyclerView
@@ -6,9 +6,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import br.com.nglauber.exemplolivro.R
 import br.com.nglauber.exemplolivro.databinding.ItemPostBinding
-import br.com.nglauber.exemplolivro.view.binding.PostBinding
+import br.com.nglauber.exemplolivro.shared.binding.PostBinding
 
-class PostListAdapter(var posts: List<PostBinding>, val itemClick: (PostBinding)->Unit) : RecyclerView.Adapter<PostListAdapter.PostViewHolder>() {
+class ListPostsAdapter(var posts: List<PostBinding>, val itemClick: (PostBinding)->Unit) : RecyclerView.Adapter<ListPostsAdapter.PostViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): PostViewHolder {
         val binding : ItemPostBinding = DataBindingUtil.inflate(

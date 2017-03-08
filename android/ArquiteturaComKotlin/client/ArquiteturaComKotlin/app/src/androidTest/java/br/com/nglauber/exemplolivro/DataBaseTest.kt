@@ -43,7 +43,7 @@ class DataBaseTest {
             assertNotNull(post)
             assertEquals(post.text, "Texto novo")
 
-            assertTrue(db?.deletePost(post)!!)
+            assertNotNull(db?.deletePost(post))
             file = File(Uri.parse(post.photoUrl).path)
             assertFalse(file.exists())
         }

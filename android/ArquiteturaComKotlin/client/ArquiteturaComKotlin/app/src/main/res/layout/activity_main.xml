@@ -4,10 +4,10 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="br.com.nglauber.exemplolivro.view.activity.MainActivity">
+    tools:context=".features.postslist.ListPostsActivity">
 
     <fragment
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:name="br.com.nglauber.exemplolivro.view.fragment.ListPostsFragment"/>
+        android:name="br.com.nglauber.exemplolivro.features.postslist.ListPostsFragment"/>
 </RelativeLayout>

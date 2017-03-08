@@ -5,7 +5,7 @@ import rx.Observable
 
 interface PostDataSource {
 
-    fun loadPosts() : Observable<List<Post>>
+    fun loadPosts() : Observable<Post>
 
     fun loadPost(postId : Long) : Observable<Post>
 

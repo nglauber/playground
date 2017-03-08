@@ -1,17 +1,17 @@
-package br.com.nglauber.exemplolivro.presenter
+package br.com.nglauber.exemplolivro.features.login
 
 import br.com.nglauber.exemplolivro.model.auth.Authentication
 import br.com.nglauber.exemplolivro.model.auth.OnAuthRequestedListener
 
-class LoginPresenterImpl (private val mLoginView: LoginContract.LoginView) : LoginContract.LoginPresenter {
+class LoginPresenter(private val mLoginView: LoginContract.LoginView) : LoginContract.LoginPresenter {
     private var mAuth: Authentication? = null
-    private val mAuthRequested: OnAuthRequestedListener
+    private val mAuthReqListener: OnAuthRequestedListener
 
     init {
-        mAuthRequested = object : OnAuthRequestedListener {
+        mAuthReqListener = object : OnAuthRequestedListener {
             override fun onAuthSuccess() {
                 mLoginView.showProgress(false)
-                mLoginView.goToMainScreen()
+                mLoginView.showMainScreen()
             }
 
             override fun onAuthError() {
@@ -28,10 +28,10 @@ class LoginPresenterImpl (private val mLoginView: LoginContract.LoginView) : Log
     override fun startAuthProcess(auth: Authentication) {
         mAuth = auth
         mLoginView.showProgress(true)
-        mAuth!!.startAuthProcess(mAuthRequested)
+        mAuth?.startAuthProcess(mAuthReqListener)
     }
 
     override fun handleAuthResponse(requestCode: Int, resultCode: Int, data: Any) {
-        mAuth!!.handleAuthResponse(requestCode, resultCode, data)
+        mAuth?.handleAuthResponse(requestCode, resultCode, data)
     }
 }

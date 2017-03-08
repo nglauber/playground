@@ -20,7 +20,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import rx.Observable
 import java.io.File
 
-class PostWeb(private val username : String = AccessManager.instance.currentUser?.email!!,
+class PostWeb(private val username : String? = AccessManager.instance.currentUser?.uuid,
               private val context : Context = App.instance) : PostDataSource {
 
     val service : PostAPI
@@ -50,20 +50,24 @@ class PostWeb(private val username : String = AccessManager.instance.currentUser
         service = retrofit.create<PostAPI>(PostAPI::class.java)
     }
 
-    override fun loadPosts() : Observable<List<Post>> {
-        val result = service.list(username).map {
-            post -> post.map { it.toDomain() }
-        }
-        return result
+    override fun loadPosts() : Observable<Post> {
+        if (username == null) throw IllegalStateException("User not authenticated")
+
+        return service.list(username)
+                .map { post -> post.map { it.toDomain() } }
+                .flatMap { posts -> Observable.from(posts) }
     }
 
-
     override fun loadPost(postId: Long) : Observable<Post> {
+        if (username == null) throw IllegalStateException("User not authenticated")
+
         val postMapper = service.loadPost(postId, username)
         return postMapper.map{ post-> post?.toDomain() }
     }
 
     override fun savePost(post: Post): Observable<Long> {
+        if (username == null) throw IllegalStateException("User not authenticated")
+
         val apiResult = if (post.id == 0L) {
             service.insert(PostMapper(post, username))
 

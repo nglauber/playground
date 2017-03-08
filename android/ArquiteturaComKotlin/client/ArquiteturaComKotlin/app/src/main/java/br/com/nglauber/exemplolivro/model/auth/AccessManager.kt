@@ -7,14 +7,13 @@ import java.util.*
 class AccessManager private constructor() {
 
     private val mCallbacks: MutableMap<AccessChangedListener, WeakReference<FirebaseAuth.AuthStateListener>>
-    private val mAuth: FirebaseAuth
+    private val mAuth: FirebaseAuth = FirebaseAuth.getInstance()
 
     init {
-        mAuth = FirebaseAuth.getInstance()
         mCallbacks = HashMap<AccessChangedListener, WeakReference<FirebaseAuth.AuthStateListener>>()
     }
 
-    val currentUser: User?
+    var currentUser: User? = null
         get() {
             var appUser: User? = null
             val user = mAuth.currentUser
@@ -22,7 +21,7 @@ class AccessManager private constructor() {
                 appUser = User(
                         user.displayName,
                         user.email,
-                        if (user.photoUrl != null) user.photoUrl!!.toString() else null,
+                        if (user.photoUrl != null) user.photoUrl.toString() else null,
                         user.uid)
             }
             return appUser

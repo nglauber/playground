@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="br.com.nglauber.exemplolivro.view.activity.MainActivity"
+            android:name="br.com.nglauber.exemplolivro.features.postslist.ListPostsActivity"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,12 +24,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="br.com.nglauber.exemplolivro.view.activity.LoginActivity"
+            android:name="br.com.nglauber.exemplolivro.features.login.LoginActivity"
             android:configChanges="orientation|screenSize|keyboardHidden" />
 
         <activity
-            android:name="br.com.nglauber.exemplolivro.view.activity.PostActivity"
-            android:parentActivityName="br.com.nglauber.exemplolivro.view.activity.MainActivity" />
+            android:name="br.com.nglauber.exemplolivro.features.postdetail.PostActivity"
+            android:parentActivityName="br.com.nglauber.exemplolivro.features.postslist.ListPostsActivity" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

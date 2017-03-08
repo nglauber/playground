@@ -1,9 +1,7 @@
 package br.com.nglauber.exemplolivro.model.auth.google
 
-import android.content.ContentValues.TAG
 import android.content.Intent
 import android.support.v4.app.FragmentActivity
-import android.util.Log
 import br.com.nglauber.exemplolivro.R
 import br.com.nglauber.exemplolivro.model.auth.Authentication
 import br.com.nglauber.exemplolivro.model.auth.OnAuthRequestedListener
@@ -13,17 +11,16 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import timber.log.Timber
 
 class GoogleAuth(private val mActivity: FragmentActivity) : Authentication {
     private var mAuthListener: OnAuthRequestedListener? = null
-    private val mAuth: FirebaseAuth
+    private val mAuth: FirebaseAuth = FirebaseAuth.getInstance()
     private val mGoogleSignInOptions: GoogleSignInOptions
     private val mGoogleApiClient: GoogleApiClient
     private val mConnectionFailedListener: GoogleApiClient.OnConnectionFailedListener
 
     init {
-        mAuth = FirebaseAuth.getInstance()
-
         mConnectionFailedListener = GoogleApiClient.OnConnectionFailedListener { mAuthListener!!.onAuthError() }
 
         mGoogleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -58,12 +55,12 @@ class GoogleAuth(private val mActivity: FragmentActivity) : Authentication {
     }
 
     private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
-        Log.d(TAG, "firebaseAuthWithGoogle:" + acct.id!!)
+        Timber.d("firebaseAuthWithGoogle:" + acct.id!!)
 
         val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(mActivity) { task ->
-                    Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful)
+                    Timber.d("signInWithCredential:onComplete:" + task.isSuccessful)
 
                     // If sign in fails, display a message to the user. If sign in succeeds
                     // the auth state listener will be notified and logic to handle the
@@ -72,7 +69,7 @@ class GoogleAuth(private val mActivity: FragmentActivity) : Authentication {
                         mAuthListener!!.onAuthSuccess()
 
                     } else {
-                        Log.w(TAG, "signInWithCredential", task.exception)
+                        Timber.d("signInWithCredential", task.exception)
                         mAuthListener!!.onAuthError()
                     }
                 }

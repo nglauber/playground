@@ -1,10 +1,11 @@
-package br.com.nglauber.exemplolivro.presenter
+package br.com.nglauber.exemplolivro.features.postslist
 
-import br.com.nglauber.exemplolivro.view.binding.PostBinding
+import br.com.nglauber.exemplolivro.shared.BaseContract
+import br.com.nglauber.exemplolivro.shared.binding.PostBinding
 
 interface ListPostsContract {
 
-    interface ListPostsPresenter {
+    interface Presenter : BaseContract.BasePresenter {
 
         fun addNewPost()
 
@@ -13,7 +14,7 @@ interface ListPostsContract {
         fun loadPosts()
     }
 
-    interface ListPostsView {
+    interface View : BaseContract.BaseView<Presenter> {
 
         fun addNewPost()
 

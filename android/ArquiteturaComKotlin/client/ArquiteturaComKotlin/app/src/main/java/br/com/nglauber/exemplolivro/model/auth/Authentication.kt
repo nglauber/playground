@@ -4,7 +4,7 @@ interface Authentication {
 
     fun startAuthProcess(l: OnAuthRequestedListener)
 
-    //TODO check how to improve this
+    //TODO check how to improve this last parameter
     fun handleAuthResponse(requestCode: Int, resultCode: Int, data: Any)
 
     companion object {

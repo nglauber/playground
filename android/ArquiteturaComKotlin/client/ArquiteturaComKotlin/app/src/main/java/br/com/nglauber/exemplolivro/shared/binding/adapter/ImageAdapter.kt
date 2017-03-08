@@ -1,4 +1,4 @@
-package br.com.nglauber.exemplolivro.view.binding.adapter
+package br.com.nglauber.exemplolivro.shared.binding.adapter
 
 import android.databinding.BindingAdapter
 import android.graphics.drawable.Drawable

@@ -9,12 +9,13 @@ import br.com.nglauber.exemplolivro.model.persistence.PostDataSource
 import br.com.nglauber.exemplolivro.model.persistence.file.Media
 import org.jetbrains.anko.db.*
 import rx.Observable
+import timber.log.Timber
 import java.io.File
 import java.util.*
 
 class PostDb(val dbHelper : DbHelper = DbHelper(App.instance)) : PostDataSource {
 
-    override fun loadPosts() : Observable<List<Post>> {
+    override fun loadPosts() : Observable<Post> {
         val posts = dbHelper.use {
             select(PostTable.TABLE_NAME).parseList(object : MapRowParser<Post> {
                 override fun parseRow(columns : Map<String, Any?>) : Post {
@@ -22,7 +23,7 @@ class PostDb(val dbHelper : DbHelper = DbHelper(App.instance)) : PostDataSource 
                 }
             })
         }
-        return Observable.just(posts)
+        return Observable.from(posts)
     }
 
     override fun loadPost(postId: Long) : Observable<Post> {
@@ -55,8 +56,7 @@ class PostDb(val dbHelper : DbHelper = DbHelper(App.instance)) : PostDataSource 
                 subscriber.onNext(post.id)
 
             } catch (e : Throwable) {
-                e.printStackTrace()
-
+                Timber.e(e)
                 subscriber.onError(e)
             }
         }
@@ -87,6 +87,7 @@ class PostDb(val dbHelper : DbHelper = DbHelper(App.instance)) : PostDataSource 
                     }
 
                 } catch (e : Throwable) {
+                    Timber.e(e)
                     subscriber.onError(e)
 
                 } finally {

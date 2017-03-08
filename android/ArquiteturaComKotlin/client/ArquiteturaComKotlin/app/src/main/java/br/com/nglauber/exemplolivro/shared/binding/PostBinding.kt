@@ -1,4 +1,4 @@
-package br.com.nglauber.exemplolivro.view.binding
+package br.com.nglauber.exemplolivro.shared.binding
 
 import android.databinding.BaseObservable
 import android.databinding.Bindable

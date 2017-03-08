@@ -1,13 +1,12 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="br.com.nglauber.exemplolivro.view.fragment.ListPostsFragment">
+    tools:context=".features.postslist.ListPostsFragment">
 
     <data>
-
         <variable
             name="presenter"
-            type="br.com.nglauber.exemplolivro.presenter.ListPostsContract.ListPostsPresenter" />
+            type="br.com.nglauber.exemplolivro.features.postslist.ListPostsContract.Presenter" />
     </data>
 
     <RelativeLayout

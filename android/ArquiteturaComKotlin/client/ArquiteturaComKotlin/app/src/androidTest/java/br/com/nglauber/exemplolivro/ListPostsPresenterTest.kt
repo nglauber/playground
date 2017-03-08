@@ -1,9 +1,9 @@
 package br.com.nglauber.exemplolivro
 
 import br.com.nglauber.exemplolivro.model.persistence.PostDataSource
-import br.com.nglauber.exemplolivro.presenter.ListPostsContract
-import br.com.nglauber.exemplolivro.presenter.ListPostsPresenterImpl
-import br.com.nglauber.exemplolivro.view.binding.PostBinding
+import br.com.nglauber.exemplolivro.features.postslist.ListPostsContract
+import br.com.nglauber.exemplolivro.features.postslist.ListPostsPresenter
+import br.com.nglauber.exemplolivro.shared.binding.PostBinding
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -26,7 +26,7 @@ class ListPostsPresenterTest {
 
     @Before
     fun setup() {
-        presenter = ListPostsPresenterImpl(view!!, dataSource!!)
+        presenter = ListPostsPresenter(view!!, dataSource!!)
     }
 
     @Test

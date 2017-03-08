@@ -1,41 +1,38 @@
-package br.com.nglauber.exemplolivro.view.fragment
+package br.com.nglauber.exemplolivro.features.postdetail
 
 import android.app.Activity
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import br.com.nglauber.exemplolivro.R
 import br.com.nglauber.exemplolivro.databinding.FragmentPostBinding
-import br.com.nglauber.exemplolivro.presenter.PostContract
-import br.com.nglauber.exemplolivro.presenter.PostPresenterImpl
-import br.com.nglauber.exemplolivro.view.binding.PostBinding
+import br.com.nglauber.exemplolivro.shared.BaseFragment
+import br.com.nglauber.exemplolivro.shared.binding.PostBinding
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException
 import com.google.android.gms.common.GooglePlayServicesRepairableException
 import com.google.android.gms.location.places.AutocompleteFilter
 import com.google.android.gms.location.places.ui.PlaceAutocomplete
 
-class PostFragment : Fragment(), PostContract.PostView {
+class PostFragment : BaseFragment(), PostContract.View {
 
     var mPost : PostBinding? = null
     var mBinding: FragmentPostBinding? = null
-    var mPresenter: PostContract.PostPresenter? = null
+    var mPresenter: PostContract.Presenter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         retainInstance = true
-        mPresenter = PostPresenterImpl(this)
+        mPresenter = PostPresenter(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_post, container, false)
         mBinding?.presenter = mPresenter
-
 
         if (mPost == null) {
             if (arguments.getLong(EXTRA_ID) > 0) {
@@ -62,6 +59,10 @@ class PostFragment : Fragment(), PostContract.PostView {
                 mPresenter?.updateLocation(latLng.latitude, latLng.longitude)
             }
         }
+    }
+
+    override fun setPresenter(presenter: PostContract.Presenter) {
+        mPresenter = presenter
     }
 
     override fun selectImage() {

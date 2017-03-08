@@ -1,4 +1,4 @@
-package br.com.nglauber.exemplolivro.view.activity
+package br.com.nglauber.exemplolivro.features.login
 
 import android.content.Intent
 import android.databinding.DataBindingUtil
@@ -11,8 +11,9 @@ import br.com.nglauber.exemplolivro.R
 import br.com.nglauber.exemplolivro.databinding.ActivityLoginBinding
 import br.com.nglauber.exemplolivro.model.auth.facebook.FacebookAuth
 import br.com.nglauber.exemplolivro.model.auth.google.GoogleAuth
-import br.com.nglauber.exemplolivro.presenter.LoginContract
-import br.com.nglauber.exemplolivro.presenter.LoginPresenterImpl
+import br.com.nglauber.exemplolivro.features.postslist.ListPostsActivity
+import br.com.nglauber.exemplolivro.features.login.LoginContract
+import br.com.nglauber.exemplolivro.features.login.LoginPresenter
 
 class LoginActivity : AppCompatActivity(), LoginContract.LoginView {
 
@@ -22,27 +23,27 @@ class LoginActivity : AppCompatActivity(), LoginContract.LoginView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView<ActivityLoginBinding>(this, R.layout.activity_login)
-        mPresenter = LoginPresenterImpl(this)
+        mPresenter = LoginPresenter(this)
 
-        mBinding!!.loginGoogleSignIn.setOnClickListener { mPresenter!!.startAuthProcess(GoogleAuth(this@LoginActivity)) }
-        mBinding!!.loginFacebookSignIn.setOnClickListener { mPresenter!!.startAuthProcess(FacebookAuth(this@LoginActivity)) }
+        mBinding?.loginGoogleSignIn?.setOnClickListener { mPresenter?.startAuthProcess(GoogleAuth(this@LoginActivity)) }
+        mBinding?.loginFacebookSignIn?.setOnClickListener { mPresenter?.startAuthProcess(FacebookAuth(this@LoginActivity)) }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         super.onActivityResult(requestCode, resultCode, data)
-        mPresenter!!.handleAuthResponse(requestCode, resultCode, data)
+        mPresenter?.handleAuthResponse(requestCode, resultCode, data)
     }
 
     override fun showProgress(show: Boolean) {
-        mBinding!!.loginProgress.visibility = if (show) View.VISIBLE else View.GONE
+        mBinding?.loginProgress?.visibility = if (show) View.VISIBLE else View.GONE
     }
 
     override fun showLoginError() {
         Toast.makeText(this, "Fail to login", Toast.LENGTH_SHORT).show()
     }
 
-    override fun goToMainScreen() {
+    override fun showMainScreen() {
         finish()
-        startActivity(Intent(this, MainActivity::class.java))
+        startActivity(Intent(this, ListPostsActivity::class.java))
     }
 }

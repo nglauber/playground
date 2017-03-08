@@ -1,11 +1,10 @@
-package br.com.nglauber.exemplolivro.view.fragment
+package br.com.nglauber.exemplolivro.features.postslist
 
 
 import android.content.Intent
 import android.content.res.Configuration
 import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
@@ -14,27 +13,25 @@ import android.view.ViewGroup
 import android.widget.Toast
 import br.com.nglauber.exemplolivro.R
 import br.com.nglauber.exemplolivro.databinding.FragmentListPostsBinding
-import br.com.nglauber.exemplolivro.presenter.ListPostsContract
-import br.com.nglauber.exemplolivro.presenter.ListPostsPresenterImpl
-import br.com.nglauber.exemplolivro.view.activity.PostActivity
-import br.com.nglauber.exemplolivro.view.adapter.PostListAdapter
-import br.com.nglauber.exemplolivro.view.binding.PostBinding
+import br.com.nglauber.exemplolivro.features.postdetail.PostActivity
+import br.com.nglauber.exemplolivro.shared.BaseFragment
+import br.com.nglauber.exemplolivro.shared.binding.PostBinding
 
-class ListPostsFragment : Fragment(), ListPostsContract.ListPostsView {
+class ListPostsFragment : BaseFragment(), ListPostsContract.View {
 
     var mBinding: FragmentListPostsBinding? = null
-    var presenter: ListPostsContract.ListPostsPresenter? = null
+    var mPresenter: ListPostsContract.Presenter? = null
 
-    init {
-        presenter = ListPostsPresenterImpl(this)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mPresenter = ListPostsPresenter(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         mBinding = DataBindingUtil.inflate<FragmentListPostsBinding>(
                 inflater, R.layout.fragment_list_posts, container, false)
-        mBinding?.presenter = presenter
-
+        mBinding?.presenter = mPresenter
         mBinding?.postListRecyclerview?.layoutManager =
                 if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
                     LinearLayoutManager(activity)
@@ -44,9 +41,18 @@ class ListPostsFragment : Fragment(), ListPostsContract.ListPostsView {
         return mBinding?.root
     }
 
-    override fun onStart() {
-        super.onStart()
-        presenter?.loadPosts()
+    override fun onResume() {
+        super.onResume()
+        mPresenter?.subscribe()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        mPresenter?.unsubscribe()
+    }
+
+    override fun setPresenter(presenter: ListPostsContract.Presenter) {
+        mPresenter = presenter
     }
 
     override fun addNewPost() {
@@ -62,8 +68,8 @@ class ListPostsFragment : Fragment(), ListPostsContract.ListPostsView {
     }
 
     override fun updateList(posts: List<PostBinding>) {
-        val adapter = PostListAdapter(posts) {
-            presenter?.editPost(it.id)
+        val adapter = ListPostsAdapter(posts) {
+            mPresenter?.editPost(it.id)
         }
         mBinding?.postListRecyclerview?.adapter = adapter
     }
