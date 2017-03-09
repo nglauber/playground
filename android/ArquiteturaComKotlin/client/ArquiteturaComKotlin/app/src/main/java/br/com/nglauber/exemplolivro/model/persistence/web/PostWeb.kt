@@ -3,8 +3,6 @@ package br.com.nglauber.exemplolivro.model.persistence.web
 import android.content.Context
 import android.net.Uri
 import android.text.TextUtils
-import br.com.nglauber.exemplolivro.App
-import br.com.nglauber.exemplolivro.model.auth.AccessManager
 import br.com.nglauber.exemplolivro.model.data.Post
 import br.com.nglauber.exemplolivro.model.persistence.PostDataSource
 import br.com.nglauber.exemplolivro.model.persistence.file.Media
@@ -20,8 +18,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 import rx.Observable
 import java.io.File
 
-class PostWeb(private val username : String? = AccessManager.instance.currentUser?.uuid,
-              private val context : Context = App.instance) : PostDataSource {
+class PostWeb(private val username : String?,
+              private val context : Context) : PostDataSource {
 
     val service : PostAPI
 

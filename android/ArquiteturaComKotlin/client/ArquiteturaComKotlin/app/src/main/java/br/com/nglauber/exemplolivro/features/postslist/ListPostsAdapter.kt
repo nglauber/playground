@@ -8,7 +8,8 @@ import br.com.nglauber.exemplolivro.R
 import br.com.nglauber.exemplolivro.databinding.ItemPostBinding
 import br.com.nglauber.exemplolivro.shared.binding.PostBinding
 
-class ListPostsAdapter(var posts: List<PostBinding>, val itemClick: (PostBinding)->Unit) : RecyclerView.Adapter<ListPostsAdapter.PostViewHolder>() {
+class ListPostsAdapter(var posts: List<PostBinding>,
+                       val itemClick: (PostBinding)->Unit) : RecyclerView.Adapter<ListPostsAdapter.PostViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): PostViewHolder {
         val binding : ItemPostBinding = DataBindingUtil.inflate(
@@ -16,7 +17,7 @@ class ListPostsAdapter(var posts: List<PostBinding>, val itemClick: (PostBinding
                 R.layout.item_post,
                 parent,
                 false)
-        return PostViewHolder(binding, itemClick)
+        return PostViewHolder(binding)
     }
 
     override fun getItemCount(): Int {
@@ -30,5 +31,5 @@ class ListPostsAdapter(var posts: List<PostBinding>, val itemClick: (PostBinding
         holder.binding.root.setOnClickListener { itemClick(post) }
     }
 
-    class PostViewHolder(val binding: ItemPostBinding, val itemClick: (PostBinding) -> Unit) : RecyclerView.ViewHolder(binding.root)
+    class PostViewHolder(val binding: ItemPostBinding) : RecyclerView.ViewHolder(binding.root)
 }

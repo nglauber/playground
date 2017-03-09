@@ -1,14 +1,21 @@
 package br.com.nglauber.exemplolivro.features.auth
 
+import br.com.nglauber.exemplolivro.App
 import br.com.nglauber.exemplolivro.model.auth.AccessManager
 import timber.log.Timber
+import javax.inject.Inject
 
-class AuthPresenter(private val view : AuthContract.View) : AuthContract.Presenter {
+class AuthPresenter : AuthContract.Presenter {
 
-    private var mAccessManager = AccessManager.instance
+    private lateinit var view : AuthContract.View
+    @Inject lateinit var mAccessManager : AccessManager
 
     init {
-        view.setPresenter(this)
+        App.component.inject(this)
+    }
+
+    override fun attachView(view: AuthContract.View) {
+        this.view = view
     }
 
     override fun subscribe() {
@@ -24,7 +31,7 @@ class AuthPresenter(private val view : AuthContract.View) : AuthContract.Present
     }
 
     override fun performLogout() {
-        AccessManager.instance.signout()
+        AccessManager.instance.signOut()
     }
 
     private val mAuthListener = object : AccessManager.AccessChangedListener {

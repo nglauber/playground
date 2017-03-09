@@ -23,14 +23,14 @@ class PostFragment : BaseFragment(), PostContract.View {
 
     @Inject lateinit var mPresenter: PostContract.Presenter
 
-    var mPost : PostBinding? = null
-    var mBinding: FragmentPostBinding? = null
+    private var mPost : PostBinding? = null
+    private var mBinding: FragmentPostBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        retainInstance = true
         App.component.inject(this)
         mPresenter.attachView(this)
+        super.onCreate(savedInstanceState)
+        retainInstance = true
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {

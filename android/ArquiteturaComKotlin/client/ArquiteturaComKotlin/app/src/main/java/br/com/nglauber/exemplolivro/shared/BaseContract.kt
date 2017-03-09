@@ -2,7 +2,7 @@ package br.com.nglauber.exemplolivro.shared
 
 interface BaseContract {
 
-    interface BasePresenter<T> {
+    interface BasePresenter<in T> {
 
         fun subscribe()
 
@@ -12,6 +12,6 @@ interface BaseContract {
     }
 
     interface BaseView {
-
+        // Empty
     }
 }

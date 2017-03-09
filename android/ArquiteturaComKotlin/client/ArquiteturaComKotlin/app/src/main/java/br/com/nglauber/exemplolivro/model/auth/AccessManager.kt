@@ -44,7 +44,7 @@ class AccessManager private constructor() {
         }
     }
 
-    fun signout() {
+    fun signOut() {
         mAuth.signOut()
     }
 

@@ -23,12 +23,12 @@ class ListPostsFragment : BaseFragment(), ListPostsContract.View {
 
     @Inject lateinit var mPresenter: ListPostsContract.Presenter
 
-    var mBinding: FragmentListPostsBinding? = null
+    private var mBinding: FragmentListPostsBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         App.component.inject(this)
         mPresenter.attachView(this)
+        super.onCreate(savedInstanceState) // TODO Find a better way to inject the superclass dependencies
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
@@ -68,9 +68,9 @@ class ListPostsFragment : BaseFragment(), ListPostsContract.View {
     }
 
     override fun updateList(posts: List<PostBinding>) {
-        val adapter = ListPostsAdapter(posts) {
+        val adapter = ListPostsAdapter(posts, {
             mPresenter.editPost(it.id)
-        }
+        })
         mBinding?.postListRecyclerview?.adapter = adapter
     }
 

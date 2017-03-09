@@ -1,18 +1,15 @@
 package br.com.nglauber.exemplolivro.features.auth
 
+import br.com.nglauber.exemplolivro.shared.BaseContract
+
 interface AuthContract {
 
-    interface Presenter {
-        fun subscribe()
-
-        fun unsubscribe()
+    interface Presenter : BaseContract.BasePresenter<View> {
 
         fun performLogout()
     }
 
-    interface View {
-
-        fun setPresenter(presenter: Presenter)
+    interface View : BaseContract.BaseView {
 
         fun logoutView()
     }
