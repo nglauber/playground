@@ -23,7 +23,7 @@ data class PostMapper(
             username,
             post.text,
             formatter.format(post.date),
-            post.photoUrl ?: "",
+            if (post.photoUrl == null ) "" else post.photoUrl!!.substringAfter(PostWeb.SERVER_PATH, ""),
             post.latitude,
             post.longitude)
 
