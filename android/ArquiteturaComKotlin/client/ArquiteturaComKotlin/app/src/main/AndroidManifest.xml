@@ -28,6 +28,7 @@
             android:configChanges="orientation|screenSize|keyboardHidden" />
 
         <activity
+            android:label="@string/post_detail_title"
             android:name="br.com.nglauber.exemplolivro.features.postdetail.PostActivity"
             android:parentActivityName="br.com.nglauber.exemplolivro.features.postslist.ListPostsActivity" />
 

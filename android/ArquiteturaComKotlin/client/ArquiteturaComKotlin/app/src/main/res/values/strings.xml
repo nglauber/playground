@@ -1,6 +1,7 @@
 <resources>
-    <string name="app_name">ExemploLivro</string>
+    <string name="app_name">Posts</string>
 
+    <string name="post_detail_title">Post detail</string>
     <string name="login_button_facebook">Sign in with facebook</string>
 
     <string name="facebook_app_id" translatable="false">1362874283786512</string>
