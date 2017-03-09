@@ -29,6 +29,7 @@ class PostsModule(private val application: App) {
     }
 
     @Provides
+    @Singleton
     fun provideAccessManager() : AccessManager {
         return AccessManager.instance
     }

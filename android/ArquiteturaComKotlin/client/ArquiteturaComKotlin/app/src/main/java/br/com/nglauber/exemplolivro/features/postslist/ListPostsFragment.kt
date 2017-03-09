@@ -23,7 +23,7 @@ class ListPostsFragment : BaseFragment(), ListPostsContract.View {
 
     @Inject lateinit var mPresenter: ListPostsContract.Presenter
 
-    private var mBinding: FragmentListPostsBinding? = null
+    private lateinit var mBinding: FragmentListPostsBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         App.component.inject(this)
@@ -35,14 +35,14 @@ class ListPostsFragment : BaseFragment(), ListPostsContract.View {
                               savedInstanceState: Bundle?): View? {
         mBinding = DataBindingUtil.inflate<FragmentListPostsBinding>(
                 inflater, R.layout.fragment_list_posts, container, false)
-        mBinding?.presenter = mPresenter
-        mBinding?.postListRecyclerview?.layoutManager =
+        mBinding.presenter = mPresenter
+        mBinding.postListRecyclerview?.layoutManager =
                 if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
                     LinearLayoutManager(activity)
                 else
                     GridLayoutManager(activity, 2)
 
-        return mBinding?.root
+        return mBinding.root
     }
 
     override fun onResume() {
@@ -64,18 +64,18 @@ class ListPostsFragment : BaseFragment(), ListPostsContract.View {
     }
 
     override fun showProgress(show: Boolean) {
-        mBinding?.postListSwipe?.isRefreshing = show
+        mBinding.postListSwipe?.isRefreshing = show
     }
 
     override fun updateList(posts: List<PostBinding>) {
         val adapter = ListPostsAdapter(posts, {
             mPresenter.editPost(it.id)
         })
-        mBinding?.postListRecyclerview?.adapter = adapter
+        mBinding.postListRecyclerview?.adapter = adapter
     }
 
     override fun showEmptyView(visible : Boolean) {
-        mBinding?.postListEmpty?.emptyRoot?.visibility = if (visible) View.VISIBLE else View.GONE
+        mBinding.postListEmpty?.emptyRoot?.visibility = if (visible) View.VISIBLE else View.GONE
     }
 
     override fun showLoadErrorMessage() {

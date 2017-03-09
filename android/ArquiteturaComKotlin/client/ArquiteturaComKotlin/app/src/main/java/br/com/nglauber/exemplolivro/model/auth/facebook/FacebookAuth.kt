@@ -16,9 +16,9 @@ import timber.log.Timber
 import java.util.*
 
 class FacebookAuth(private val mActivity: FragmentActivity) : Authentication {
-    private var mAuthListener: OnAuthRequestedListener? = null
+    private lateinit var mAuthListener: OnAuthRequestedListener
     private val mCallbackManager: CallbackManager = CallbackManager.Factory.create()
-    private val mAuth: FirebaseAuth = FirebaseAuth.getInstance()
+    private val mAuth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
 
     override fun startAuthProcess(l: OnAuthRequestedListener) {
         mAuthListener = l
@@ -31,12 +31,12 @@ class FacebookAuth(private val mActivity: FragmentActivity) : Authentication {
 
             override fun onCancel() {
                 Timber.d("facebook:onAuthCancel")
-                mAuthListener?.onAuthCancel()
+                mAuthListener.onAuthCancel()
             }
 
             override fun onError(error: FacebookException) {
                 Timber.d("facebook:onError", error)
-                mAuthListener?.onAuthError()
+                mAuthListener.onAuthError()
             }
         })
         lm.logInWithReadPermissions(mActivity, Arrays.asList("email", "public_profile"))
@@ -55,11 +55,11 @@ class FacebookAuth(private val mActivity: FragmentActivity) : Authentication {
                     Timber.d("signInWithCredential:onComplete:" + task.isSuccessful)
 
                     if (task.isSuccessful) {
-                        mAuthListener?.onAuthSuccess()
+                        mAuthListener.onAuthSuccess()
 
                     } else {
                         Timber.d( "signInWithCredential", task.exception)
-                        mAuthListener?.onAuthError()
+                        mAuthListener.onAuthError()
                     }
                 }
     }

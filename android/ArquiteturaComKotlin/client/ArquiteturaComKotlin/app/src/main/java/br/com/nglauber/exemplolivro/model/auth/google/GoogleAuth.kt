@@ -14,14 +14,14 @@ import com.google.firebase.auth.GoogleAuthProvider
 import timber.log.Timber
 
 class GoogleAuth(private val mActivity: FragmentActivity) : Authentication {
-    private var mAuthListener: OnAuthRequestedListener? = null
-    private val mAuth: FirebaseAuth = FirebaseAuth.getInstance()
+    private lateinit var mAuthListener: OnAuthRequestedListener
+    private val mAuth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
     private val mGoogleSignInOptions: GoogleSignInOptions
     private val mGoogleApiClient: GoogleApiClient
     private val mConnectionFailedListener: GoogleApiClient.OnConnectionFailedListener
 
     init {
-        mConnectionFailedListener = GoogleApiClient.OnConnectionFailedListener { mAuthListener!!.onAuthError() }
+        mConnectionFailedListener = GoogleApiClient.OnConnectionFailedListener { mAuthListener.onAuthError() }
 
         mGoogleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(mActivity.getString(R.string.default_web_client_id))
@@ -49,7 +49,7 @@ class GoogleAuth(private val mActivity: FragmentActivity) : Authentication {
                 firebaseAuthWithGoogle(account)
             }
         } else {
-            mAuthListener!!.onAuthError()
+            mAuthListener.onAuthError()
         }
         mGoogleApiClient.disconnect()
     }
@@ -66,11 +66,11 @@ class GoogleAuth(private val mActivity: FragmentActivity) : Authentication {
                     // the auth state listener will be notified and logic to handle the
                     // signed in user can be handled in the listener.
                     if (task.isSuccessful) {
-                        mAuthListener!!.onAuthSuccess()
+                        mAuthListener.onAuthSuccess()
 
                     } else {
                         Timber.d("signInWithCredential", task.exception)
-                        mAuthListener!!.onAuthError()
+                        mAuthListener.onAuthError()
                     }
                 }
     }
