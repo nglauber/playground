@@ -4,12 +4,12 @@ import br.com.nglauber.exemplolivro.shared.BaseContract
 
 interface AuthContract {
 
-    interface Presenter : BaseContract.BasePresenter<View> {
+    interface Presenter : BaseContract.Presenter<View> {
 
         fun performLogout()
     }
 
-    interface View : BaseContract.BaseView {
+    interface View : BaseContract.View {
 
         fun logoutView()
     }

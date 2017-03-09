@@ -59,11 +59,11 @@ dependencies {
     // RX
     compile 'io.reactivex:rxjava:1.2.5'
     compile 'io.reactivex:rxandroid:1.2.1'
-    compile "com.squareup.retrofit2:adapter-rxjava:2.1.0"
 
     // Retrofit + GSON + Interceptor
-    compile "com.squareup.retrofit2:retrofit:2.0.0"
-    compile "com.squareup.retrofit2:converter-gson:2.1.0"
+    compile "com.squareup.retrofit2:adapter-rxjava:$retrofit_version"
+    compile "com.squareup.retrofit2:retrofit:$retrofit_version"
+    compile "com.squareup.retrofit2:converter-gson:$retrofit_version"
     compile 'com.squareup.okhttp3:logging-interceptor:3.3.1'
 
     // Timber
