@@ -1,0 +1,48 @@
+apply plugin: 'com.android.application'
+apply plugin: 'me.tatarka.retrolambda'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
+    defaultConfig {
+        applicationId "br.com.nglauber.starwarsjavarx"
+        minSdkVersion 16
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    // AppCompat
+    compile "com.android.support:appcompat-v7:$appcompat_version"
+    // RXJava
+    compile 'io.reactivex:rxjava:1.2.5'
+    // RXAndroid para termos acesso a main thread do Android
+    compile 'io.reactivex:rxandroid:1.2.1'
+    // Retrofit
+    compile "com.squareup.retrofit2:retrofit:$retrofit_version"
+    // Adapter do Retrofit para retornar objetos observáveis
+    compile "com.squareup.retrofit2:adapter-rxjava:$retrofit_version"
+    // Converter do Retrofit para utilizar o Gson para tratar a resposta do servidor
+    compile "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    // Interceptor para visualizar os logs das requisições do Retrofit
+    compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
+
+    testCompile 'junit:junit:4.12'
+}
