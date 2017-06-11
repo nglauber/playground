@@ -1,0 +1,21 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportHeight="12"
+    android:viewportWidth="12">
+
+    <group
+        android:name="triangle"
+        android:pivotX="6"
+        android:pivotY="6">
+        <path
+            android:name="triangle_1"
+            android:fillColor="#000"
+            android:pathData="@string/path_play_1" />
+
+        <path
+            android:name="triangle_2"
+            android:fillColor="#000"
+            android:pathData="@string/path_play_2" />
+    </group>
+</vector>

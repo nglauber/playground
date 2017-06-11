@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="path_play_1" translatable="false">M 3,2 L 3,10 L 6,8 L 6,4 Z</string>
+    <string name="path_play_2" translatable="false">M 6,4 L 6,8 L 9,6 L 6,4 Z</string>
+    <string name="path_pause_1" translatable="false">M 3,2 L 3,10 L 5,10 L 5,2 Z</string>
+    <string name="path_pause_2" translatable="false">M 7,2 L 7,10 L 9,10 L 9,2 Z</string>
+
+    <string name="heart_stroke_left">M28.7,38.3 L25.6,35.5 C21.6,31.8 18.0,29.1 18.0,25.0 C18.0,22.4 20.6,20.0 23.6,20.0 C25.0,20.0 26.8,21.1 28.6,23.1</string>
+    <string name="heart_stroke_right">M27.2,38.3 L30.7,35.5 C34.8,31.8 37.7,29.1 38.0,25.0 C38.1,22.4 35.7,20.0 33.4,20.0 C30.4,20.0 29.7,21.1 27.2,23.1</string>
+    <string name="heart_full_path">M28,39 L26.4,37.5 C20.74,32.47 17,29.10 17,24.99 C17,21.63 19.65,19 23.05,19 C24.96,19 26.80,19.88 28,21.27 C29.19,19.88 31.03,19 32.95,19 C36.34,19 39,21.63 39,24.99 C39,29.11 35.26,32.47 29.59,37.56 L28,39 L28,39 Z</string>
+    <string name="heart_clip_hidden">M0 56 L56 56 L56 55 L0 55 Z</string>
+    <string name="heart_clip_shown">M0 0 L56 0 L56 56 L0 56 Z</string>
+</resources>

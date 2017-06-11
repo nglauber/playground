@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:drawable="@drawable/ic_vector_pause">
+
+    <target android:name="bar_1">
+        <aapt:attr name="android:animation">
+            <objectAnimator
+                android:duration="300"
+                android:propertyName="pathData"
+                android:valueFrom="@string/path_pause_1"
+                android:valueTo="@string/path_play_1"
+                android:valueType="pathType" />
+        </aapt:attr>
+    </target>
+
+    <target android:name="bar_2">
+        <aapt:attr name="android:animation">
+            <objectAnimator
+                android:duration="300"
+                android:propertyName="pathData"
+                android:valueFrom="@string/path_pause_2"
+                android:valueTo="@string/path_play_2"
+                android:valueType="pathType" />
+        </aapt:attr>
+    </target>
+</animated-vector>

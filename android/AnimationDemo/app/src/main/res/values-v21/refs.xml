@@ -1,0 +1,5 @@
+<resources>
+    <item name="ic_clock" type="drawable">@drawable/ic_avd_clock</item>
+    <item name="ic_play" type="drawable">@drawable/ic_avd_play_pause</item>
+    <item name="ic_pause" type="drawable">@drawable/ic_avd_pause_play</item>
+</resources>

@@ -1,0 +1,8 @@
+<rotate xmlns:android="http://schemas.android.com/apk/res/android"
+    android:repeatCount="1"
+    android:repeatMode="reverse"
+    android:fromDegrees="0"
+    android:toDegrees="360"
+    android:pivotX="50%"
+    android:pivotY="50%"
+    android:duration="1000"/>

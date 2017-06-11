@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="ic_clock" type="drawable">@drawable/ic_vector_clock_alarm</item>
+    <item name="ic_play" type="drawable">@drawable/ic_vector_play</item>
+    <item name="ic_pause" type="drawable">@drawable/ic_vector_pause</item>
+</resources>

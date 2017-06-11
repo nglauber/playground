@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="animacoes">
+        <item>AlphaAnimation</item>
+        <item>RotateAnimation</item>
+        <item>ScaleAnimation</item>
+        <item>TranslateAnimation</item>
+        <item>AnimationSet</item>
+    </string-array>
+
+    <string-array name="animators">
+        <item>AlphaAnimator</item>
+        <item>RotateAnimator</item>
+        <item>ScaleAnimator</item>
+        <item>TranslateAnimator</item>
+    </string-array>
+
+    <string-array name="listInterpolators">
+        <item>AccelerateDecelerateInterpolator</item>
+        <item>AccelerateInterpolator</item>
+        <item>AnticipateInterpolator</item>
+        <item>AnticipateOvershootInterpolator</item>
+        <item>BounceInterpolator</item>
+        <item>CycleInterpolator</item>
+        <item>DecelerateInterpolator</item>
+        <item>LinearInterpolator</item>
+        <item>OvershootInterpolator</item>
+        <item>FastOutLinearInInterpolator</item>
+        <item>FastOutSlowInInterpolator</item>
+        <item>LinearOutSlowInInterpolator</item>
+    </string-array>
+</resources>

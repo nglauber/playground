@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Animation Demo</string>
+
+    <string name="use_xml_res">Use XML resource</string>
+
+    <string name="button_next">Next screen</string>
+    <string name="button_less">Less…</string>
+    <string name="button_more">More…</string>
+
+    <string name="animation_code1">Object Animator</string>
+    <string name="animation_code2">ViewProperty Animator</string>
+    <string name="animation_xml">Use XML</string>
+
+    <string name="recife_name">Recife</string>
+    <string name="recife_state">Pernambuco</string>
+    <string name="recife_description">
+        Recife é um município brasileiro, capital do estado de Pernambuco, localizado na Região Nordeste do país.
+        Com área territorial de aproximadamente 218 km², é formado por uma planície aluvial, tendo as ilhas, penínsulas e manguezais como suas principais características geográficas.
+    </string>
+    <string name="hint_comment">Comente sobre essa cidade</string>
+</resources>
