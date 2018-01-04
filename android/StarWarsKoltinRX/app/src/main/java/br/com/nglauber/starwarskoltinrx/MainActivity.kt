@@ -5,8 +5,8 @@ import android.support.v7.app.AppCompatActivity
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import br.com.nglauber.starwarskoltinrx.model.api.StarWarsApi
-import rx.android.schedulers.AndroidSchedulers
-import rx.schedulers.Schedulers
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
 class MainActivity : AppCompatActivity() {
 

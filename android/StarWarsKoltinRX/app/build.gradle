@@ -2,12 +2,11 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 27
     defaultConfig {
         applicationId "br.com.nglauber.starwarskoltinrx"
         minSdkVersion 16
-        targetSdkVersion 25
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -27,11 +26,11 @@ dependencies {
     // AppCompat
     compile "com.android.support:appcompat-v7:$appcompat_version"
     // RXJava
-    compile 'io.reactivex:rxjava:1.2.5'
+    compile "io.reactivex.rxjava2:rxjava:$rxjava_version"
     // RXAndroid para termos acesso a main thread do Android
-    compile 'io.reactivex:rxandroid:1.2.1'
+    compile "io.reactivex.rxjava2:rxandroid:$rxandroid_version"
     // Retrofit
-    compile "com.squareup.retrofit2:retrofit:$retrofit_version"
+    compile "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
     // Adapter do Retrofit para retornar objetos observáveis
     compile "com.squareup.retrofit2:adapter-rxjava:$retrofit_version"
     // Converter do Retrofit para utilizar o Gson para tratar a resposta do servidor
@@ -42,6 +41,6 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
 }
