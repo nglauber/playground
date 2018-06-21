@@ -10,16 +10,19 @@ import kotlinx.android.synthetic.main.activity_view_animations.*
 
 class ViewAnimationsActivity : AppCompatActivity() {
 
-    private var animations: Array<Animation> = emptyArray()
-    private var animationsXml: Array<Animation> = emptyArray()
-    private var interpolators: Array<Interpolator> = emptyArray()
+    private val animations: Array<Animation> by lazy {
+        initAnimations()
+    }
+    private val animationsXml: Array<Animation> by lazy {
+        initAnimationsXml()
+    }
+    private val interpolators: Array<Interpolator> by lazy {
+        initInterpolators()
+    }
 
     public override fun onCreate(savedInstanceState: android.os.Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_animations)
-
-        initInterpolators()
-        initAnimations()
 
         img_bazinga.setOnClickListener { executeAnimation() }
         button_next.setOnClickListener { nextScreen() }
@@ -31,21 +34,19 @@ class ViewAnimationsActivity : AppCompatActivity() {
         overridePendingTransition(R.anim.scale_up, R.anim.slide_out_left)
     }
 
-    private fun initAnimations() {
-        // From Xml
-        animationsXml = arrayOf(
-            AnimationUtils.loadAnimation(this, R.anim.anim_fade),
-            AnimationUtils.loadAnimation(this, R.anim.anim_rotation),
-            AnimationUtils.loadAnimation(this, R.anim.anim_scale),
-            AnimationUtils.loadAnimation(this, R.anim.anim_translation),
-            AnimationUtils.loadAnimation(this, R.anim.anim_set)
+    private fun initAnimationsXml(): Array<Animation> {
+        return arrayOf(
+                AnimationUtils.loadAnimation(this, R.anim.anim_fade),
+                AnimationUtils.loadAnimation(this, R.anim.anim_rotation),
+                AnimationUtils.loadAnimation(this, R.anim.anim_scale),
+                AnimationUtils.loadAnimation(this, R.anim.anim_translation),
+                AnimationUtils.loadAnimation(this, R.anim.anim_set)
         )
-
-        // From Code
-        val DURACAO_ANIMACAO = 1000
+    }
+    private fun initAnimations(): Array<Animation> {
+        val animationDuration = 1000L
 
         val alphaAnim = AlphaAnimation(1f, 0f)
-        alphaAnim.duration = 1000
         val rotateAnim = RotateAnimation(
                 0f, 360f,
                 Animation.RELATIVE_TO_SELF, 0.5f,
@@ -66,17 +67,19 @@ class ViewAnimationsActivity : AppCompatActivity() {
         set.addAnimation(scaleAnim)
         set.addAnimation(translateAnim)
 
-        animations = arrayOf( alphaAnim, rotateAnim, scaleAnim, translateAnim, set)
+        val animations = arrayOf( alphaAnim, rotateAnim, scaleAnim, translateAnim, set)
 
         for (i in 0..animations.size - 2) {
-            animations[i].duration = DURACAO_ANIMACAO.toLong()
+            animations[i].duration = animationDuration
             animations[i].repeatMode = Animation.REVERSE
             animations[i].repeatCount = 1
         }
+
+        return animations
     }
 
-    private fun initInterpolators() {
-        interpolators = arrayOf(
+    private fun initInterpolators(): Array<Interpolator> {
+        return arrayOf(
                 AccelerateDecelerateInterpolator(),
                 AccelerateInterpolator(1.0f), // <- factor (optional)
                 AnticipateInterpolator(2.0f), // <- tension (optional)

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="animacoes">
+    <string-array name="view_animations">
         <item>AlphaAnimation</item>
         <item>RotateAnimation</item>
         <item>ScaleAnimation</item>
@@ -8,14 +8,7 @@
         <item>AnimationSet</item>
     </string-array>
 
-    <string-array name="animators">
-        <item>AlphaAnimator</item>
-        <item>RotateAnimator</item>
-        <item>ScaleAnimator</item>
-        <item>TranslateAnimator</item>
-    </string-array>
-
-    <string-array name="listInterpolators">
+    <string-array name="interpolators">
         <item>AccelerateDecelerateInterpolator</item>
         <item>AccelerateInterpolator</item>
         <item>AnticipateInterpolator</item>
@@ -28,5 +21,12 @@
         <item>FastOutLinearInInterpolator</item>
         <item>FastOutSlowInInterpolator</item>
         <item>LinearOutSlowInInterpolator</item>
+    </string-array>
+
+    <string-array name="animators">
+        <item>AlphaAnimator</item>
+        <item>RotateAnimator</item>
+        <item>ScaleAnimator</item>
+        <item>TranslateAnimator</item>
     </string-array>
 </resources>

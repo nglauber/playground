@@ -20,7 +20,7 @@ class TransitionFormActivity : AppCompatActivity() {
     }
 
     fun onSaveClick() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && chkAnimate.isChecked) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && chkAnimate.isChecked) {
             if (chkUseXml.isChecked) {
                 val transition = TransitionInflater.from(this)
                         .inflateTransition(if (fieldsVisible) R.transition.transition_form_hide else R.transition.transition_form_show)
