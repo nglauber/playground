@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Google Books</string>
+    <string name="error_no_connection">Sem conexão</string>
+    <string name="error_load_books">Falha ao obter lista de livros</string>
+    <string name="message_progress">Baixando informações dos livros…</string>
+    <string name="n_paginas">%d páginas</string>
+    <string name="author">Autor: %s</string>
+    <string name="publisher">Editora: %s</string>
+    <string name="title_activity_book_details">Detalhes do livro</string>
+    <string name="action_search">Procurar livros</string>
+</resources>
