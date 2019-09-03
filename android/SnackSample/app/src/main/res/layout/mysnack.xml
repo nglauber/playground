@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/snackFaker"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/snack_bg"
+    android:orientation="horizontal"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp">
+
+    <TextView
+        android:id="@+id/txtMessage"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="@color/snack_text" />
+
+    <Button
+        style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+        android:id="@+id/btnAction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null" />
+</LinearLayout>
